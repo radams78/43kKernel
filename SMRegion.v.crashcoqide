@@ -1,0 +1,18 @@
+Set Implicit Arguments.
+
+Require Import Region.
+
+Definition BasicSMRegion : Set := 
+  { P : { B : Boundary & Region B } | 
+  match P with (existT _ R) => signature_minimal R /\ basic R end }.
+
+Inductive SMRegion : Set :=
+  basicSMR : BasicSMRegion -> SMRegion |
+  unionSMR : SMRegion -> BasicSMRegion -> SMRegion.
+
+Axiom code : forall B (R : Region B), signature_minimal R -> SMRegion.
+
+Axiom boundary : SMRegion -> Boundary.
+Axiom decode : forall R, Region (boundary R).
+
+Axiom code_size : forall B R p, size (decode (@code B R p)) = size R.
