@@ -1,16 +1,27 @@
 import java.util.*;
+import java.io.*;
 
+/**
+ * A <i>boundary</i> consists of:
+ * <ul>
+ * <li>a <i>top path</i> as a list of points.
+ * <li>a <i>bottom path</i> as a list of points.
+ * </ul>
+ * Points are represented as integers.  The top and bottom paths should have common end-points, called <i>anchors</i>.
+ */
 public class Boundary {
 	private ArrayList<Integer> topPath;
 	private ArrayList<Integer> bottomPath;
+    /** Number of vertices in both paths, including end-points. */
 	public final int size;
 	
-	Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath) {
+	public Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath) {
 		this.topPath = new ArrayList<Integer> (topPath);
 		this.bottomPath = new ArrayList<Integer> (bottomPath);
 		this.size = vertexSet().size();
 	} 
 	
+    /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
 	public ArrayList<Integer> vertexSet() {
 		ArrayList<Integer> ans = new ArrayList<Integer> ();
 		ans.addAll(topPath);
@@ -21,12 +32,14 @@ public class Boundary {
 		return ans;	
 	}
 
+    /** Set of all neigbours of a given set of points */
 	public Set<Integer> neighbors(Set<Integer> S) {
 		Set<Integer> ans = PathOperator.pathNeighbors(topPath, S);	
 		ans.addAll(PathOperator.pathNeighbors(bottomPath, S));
 		return ans;
 	}
 	
+    /** Tests whether two points are neighbours in the boundary */
 	public boolean areNeighbors(int u, int v) {
 		Set<Integer> S = new TreeSet<Integer> ();
 		S.add(u);
@@ -51,7 +64,9 @@ public class Boundary {
 	public ArrayList<Integer> getTopPath(){return new ArrayList<Integer> (topPath);}
 	public ArrayList<Integer> getBottomPath(){return new ArrayList<Integer> (bottomPath);}
 
+    /** Renumbers the vertices in the order given by {@link #vertexSet} */
 	public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet());}
+    /** The boundary, as renumbered by {@link #canonicalRenamer} */
 	Boundary canonicalBoundary() {return canonicalRenamer().renamedBoundary(this);}
 	
 	public String toString() {return "<" + topPath.toString() + " - " + bottomPath.toString() + ">";}
@@ -62,7 +77,7 @@ public class Boundary {
 		return topPath.equals(b.getTopPath()) && bottomPath.equals(b.getBottomPath());
 	}
 	
-	// An input is valid if D is disjoint from N(X).
+    /** An input (D, X) is valid if D is disjoint from N(X) */
 	public ArrayList<InputPair> allValidInputs() {
 		ArrayList<InputPair> ans = new ArrayList<InputPair> ();
 		TreeSet<Integer> allVertices = new TreeSet<Integer> (vertexSet());
@@ -78,7 +93,7 @@ public class Boundary {
 		return ans;
 	}
 	
-	// true if b can be glued to the bottom of this.
+    /** true if b can be glued to the bottom of this */
 	public boolean canGlue(Boundary bottomBoundary) {
 		
 		// FALSE if top and bottom boundaries dont match
@@ -94,11 +109,11 @@ public class Boundary {
 		return true;	
 	}
 	
-	// glue b onto this and return the resulting outer boundary
+    /** glue bottomBoundary onto this and return the resulting outer boundary */
 	public Boundary glue(Boundary bottomBoundary) {return (new DoubleBoundary (this, bottomBoundary)).getOuterBoundary();}
 
 	
-	// Transforms an input pair to Johan Style (i.e (X,S) where S = VertexSet \ (N[X] u D)
+    /** Transforms an input pair to Johan Style (i.e (X,S) where S = VertexSet \ (N[X] u D) */
 	public InputPair toJohanStyle(InputPair inp) {
 		Set<Integer> X = new TreeSet<Integer> (inp.first);
 		Set<Integer> D = new TreeSet<Integer> (inp.second);
@@ -111,9 +126,9 @@ public class Boundary {
 		return new InputPair(X,S);
 	}
 	
-	// Transforms an input pair from Johan Style to Daniel Style
-	// (X,S) --> (X, D) where D = VertexSet \ (N[X] u D) 
-	// so ironically converting to and from is the same.
+    /** Transforms an input pair from Johan Style to Daniel Style
+     * (X,S) --> (X, D) where D = VertexSet \ (N[X] u D) 
+     * so ironically converting to and from is the same. */
 	public InputPair fromJohanStyle(InputPair inp) {return toJohanStyle(inp);}
 	
 	
@@ -147,6 +162,21 @@ public class Boundary {
 		
 		sc.close();
 	}
-	
-	
+
+    public void arrayListToCoq(ArrayList<Integer> list, PrintWriter writer) {
+	writer.print("(");
+	for (Integer i : list) {
+	    writer.print(i + " :: ");
+	}
+	writer.print("nil)");
+    }
+
+    public void toCoq(String name, PrintWriter writer) {
+	writer.println("Definition " + name + " : boundary :=");
+	writer.print("  mkBoundary nat ");
+	Coq.iterableToCoq(getTopPath(), writer);
+	writer.print(" ");
+	Coq.iterableToCoq(getBottomPath(), writer);
+	writer.println(".");
+    }
 }
