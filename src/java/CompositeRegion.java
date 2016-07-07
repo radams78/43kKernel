@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class CompositeRegion extends Region {
 	Signature sig;
 	
@@ -29,4 +31,5 @@ public class CompositeRegion extends Region {
 		return sig;	
 	}
 
+    public void toCoq(String name, PrintWriter writer) {}
 }

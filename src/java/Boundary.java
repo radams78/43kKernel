@@ -7,7 +7,9 @@ import java.io.*;
  * <li>a <i>top path</i> as a list of points.
  * <li>a <i>bottom path</i> as a list of points.
  * </ul>
- * Points are represented as integers.  The top and bottom paths should have common end-points, called <i>anchors</i>.
+ * Points are represented as integers.  
+ *
+ * Invariant: The top and bottom paths should have common end-points, called <i>anchors</i>.
  */
 public class Boundary {
 	private ArrayList<Integer> topPath;
@@ -15,7 +17,12 @@ public class Boundary {
     /** Number of vertices in both paths, including end-points. */
 	public final int size;
 	
+    /**
+     * Precondition: topPath and bottomPath have the same first and last elements
+     */
 	public Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath) {
+		assert topPath.get(0) == bottomPath.get(0);
+		assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 		this.topPath = new ArrayList<Integer> (topPath);
 		this.bottomPath = new ArrayList<Integer> (bottomPath);
 		this.size = vertexSet().size();
@@ -163,16 +170,8 @@ public class Boundary {
 		sc.close();
 	}
 
-    public void arrayListToCoq(ArrayList<Integer> list, PrintWriter writer) {
-	writer.print("(");
-	for (Integer i : list) {
-	    writer.print(i + " :: ");
-	}
-	writer.print("nil)");
-    }
-
     public void toCoq(String name, PrintWriter writer) {
-	writer.println("Definition " + name + " : boundary :=");
+	writer.println("Definition " + name + " : Boundary :=");
 	writer.print("  mkBoundary nat ");
 	Coq.iterableToCoq(getTopPath(), writer);
 	writer.print(" ");

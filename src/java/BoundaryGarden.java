@@ -56,9 +56,6 @@ public class BoundaryGarden {
 	
     }
     
-    /**
-     * Javadoc test
-     */
     public Boundary getBoundary(int p) {return boundaries.get(p);}
     public int boundaryId(Boundary b) {return boundaries.indexOf(b);}
     

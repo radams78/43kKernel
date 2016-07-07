@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class BasicRegion extends Region {
 
@@ -121,5 +122,13 @@ public class BasicRegion extends Region {
 		BasicRegion br = (BasicRegion) o;
 		return getDescriptor().equals(br.getDescriptor());
 	}
-	
+
+    public void toCoq(String name, PrintWriter writer) {
+	String boundaryName = name + "_boundary";
+	myBoundary.toCoq(boundaryName, writer);
+	writer.println("Definition " + name + " : BasicRegion :=");
+	writer.println("  mkBasicRegion " + boundaryName);
+	writer.println("  " + typeNames[leftInternalType] + " " + typeNames[rightInternalType]);
+	writer.println("  " + desc.hasLeftEdge + " " + desc.hasRightEdge + ".");
+    }
 }

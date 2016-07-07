@@ -3,7 +3,7 @@ and two paths out of that set. *)
 
 Require Import List.
 
-Record boundary : Type := mkBoundary
-{points : Set;
- topPath : list points;
- bottomPath : list points}.
+Record Boundary : Type := mkBoundary
+{Points : Set;
+ topPath : list Points;
+ bottomPath : list Points}.

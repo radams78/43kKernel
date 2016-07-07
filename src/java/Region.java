@@ -1,3 +1,5 @@
+import java.io.*;
+
 public abstract class Region {
 
 	protected BoundaryGarden myGarden;
@@ -23,4 +25,5 @@ public abstract class Region {
 		return new SignatureTranscript(myBoundary, getSignature());
 	}
 
+    public abstract void toCoq(String name, PrintWriter writer);
 }

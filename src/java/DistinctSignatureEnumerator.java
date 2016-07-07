@@ -17,7 +17,7 @@ public class DistinctSignatureEnumerator {
 	
 	DistinctSignatureEnumerator(String boundaryFile) throws Exception {
 	    System.out.print("Reading input ...");
-	    BoundaryListReader BLR = new BoundaryListReader(new Scanner(new File("boundaries.txt")));
+	    BoundaryListReader BLR = new BoundaryListReader(new Scanner(new File("boundaries.txt"))); //BUG: Should be boundaryFile?
 	    Pair<ArrayList<Boundary>, ArrayList<String> > BL = BLR.readBoundaries();
 	    BLR.close();
 	    System.out.println("done.");
