@@ -70,16 +70,24 @@ public class BasicRegionGenerator {
 	
 	return true;
     }
+
+
     
-    void toCoq(String name, PrintWriter writer) {
+    public String toCoqq(String name) {
+	String result = "";
+	List<String> names = new ArrayList<String>();
 	for (int i = 0; i < basicRegions.size(); i++) {
-	    basicRegions.get(i).toCoq(name + "_region" + i , writer);
-	    writer.println();
+	    String regionName = name + "_region" + i;
+	    result += basicRegions.get(i).toCoqq(regionName);
+	    names.add(regionName);
 	}
-	writer.println("Definition " + name + " : List BasicRegion :=");
-	for (int i = 0; i < basicRegions.size(); i++) {
-	    writer.println("  " + name + "_region" + i + " ;");
-	}
-	writer.println("].");
+	result += "Definition " + name + " : list BasicRegion :=\n  ";
+	result += Coq.iterableToCoqq(names);
+	result += ".\n";
+	return result;
+    }
+
+    public void toCoq(String name, PrintWriter writer) {
+	writer.println(toCoqq(name));
     }
 }

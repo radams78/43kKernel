@@ -131,4 +131,14 @@ public class BasicRegion extends Region {
 	writer.println("  " + typeNames[leftInternalType] + " " + typeNames[rightInternalType]);
 	writer.println("  " + desc.hasLeftEdge + " " + desc.hasRightEdge + ".");
     }
+
+    public String toCoqq(String name) {
+	String boundaryName = name + "_boundary";
+	String result = myBoundary.toCoqq(boundaryName);
+	result += "Definition " + name + " : BasicRegion :=\n";
+	result += "  mkBasicRegion " + boundaryName;
+	result += "  " + typeNames[leftInternalType] + " " + typeNames[rightInternalType];
+	result += "  " + desc.hasLeftEdge + " " + desc.hasRightEdge + ".\n";
+	return result;
+    }
 }

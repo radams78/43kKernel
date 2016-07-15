@@ -178,4 +178,14 @@ public class Boundary {
 	Coq.iterableToCoq(getBottomPath(), writer);
 	writer.println(".");
     }
+
+    public String toCoqq(String name) {
+	String result = "Definition " + name + " : Boundary :=\n";
+	result += "  mkBoundary nat \n  ";
+	result += Coq.iterableToCoqq(getTopPath());
+	result += " \n  ";
+	result += Coq.iterableToCoqq(getBottomPath());
+	result += ".\n";
+	return result;
+    }
 }
