@@ -4,5 +4,5 @@ bin: $(shell ls src/java/*.java)
 doc:
 	javadoc -d doc src/java/*.java
 src/coq/%.vo: bin
-	@cd bin; java $* ../src/coq
+	@cd bin; java -ea $* ../src/coq
 	@cd src/coq; coqc $*

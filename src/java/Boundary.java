@@ -27,11 +27,15 @@ public class Boundary implements CoqObject {
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 	this.topPath = new ArrayList<Integer> (topPath);
-	this.topPathCoq = new CoqList<CoqInteger> (name + "_top_path");
+	this.topPathCoq = new CoqList<CoqInteger> (name + "_top_path", "nat");
 	for (Integer n : topPath) {
 	    topPathCoq.add(new CoqInteger(n));
 	}
 	this.bottomPath = new ArrayList<Integer> (bottomPath);
+	this.bottomPathCoq = new CoqList<CoqInteger> (name + "_bottom_path", "nat");
+	for (Integer n : bottomPath) {
+	    bottomPathCoq.add(new CoqInteger(n));
+	} //TODO Duplication
 	this.size = vertexSet().size();
 	this.name = name;
     } 

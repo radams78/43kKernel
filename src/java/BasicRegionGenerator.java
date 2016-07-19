@@ -30,13 +30,13 @@ public class BasicRegionGenerator implements CoqObject {
 	this.canHaveRightEdge = 		topPathIsLong && bottomPathIsLong 
 	    && !myBoundary.areNeighbors(myBoundary.topPathVertex(2), myBoundary.bottomPathVertex(2));
 	
-	setAllBasicRegions();
-
 	this.name = name;
+
+	setAllBasicRegions();
     }
     
     private void setAllBasicRegions() {
-	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name);
+	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name, "BasicRegion");
 	int counter = 0;
 	
 	boolean[] truthValues = {true, false};

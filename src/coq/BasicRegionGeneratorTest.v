@@ -3,30 +3,79 @@ Require Import BasicRegion.
 Require Import Boundary.
 Require Import Region.
 
-Definition testBasicRegionGenerator_region0_boundary : Boundary :=
+Definition testBoundary_canon_app_testBoundary_top_path : list nat :=
+  0 :: 
+  1 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary_bottom_path : list nat :=
+  0 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary : Boundary :=
   mkBoundary nat 
-  (0 :: 1 :: 2 :: nil) 
-  (0 :: 2 :: nil).
-Definition testBasicRegionGenerator_region0 : BasicRegion :=
-  mkBasicRegion testBasicRegionGenerator_region0_boundary  none none  false false.
-Definition testBasicRegionGenerator_region1_boundary : Boundary :=
+  testBoundary_canon_app_testBoundary_top_path 
+  testBoundary_canon_app_testBoundary_bottom_path.
+Definition null : BasicRegion :=
+  mkBasicRegion testBoundary_canon_app_testBoundary  none none  false false.
+Definition testBoundary_canon_app_testBoundary_top_path : list nat :=
+  0 :: 
+  1 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary_bottom_path : list nat :=
+  0 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary : Boundary :=
   mkBoundary nat 
-  (0 :: 1 :: 2 :: nil) 
-  (0 :: 2 :: nil).
-Definition testBasicRegionGenerator_region1 : BasicRegion :=
-  mkBasicRegion testBasicRegionGenerator_region1_boundary  none isolated  false false.
-Definition testBasicRegionGenerator_region2_boundary : Boundary :=
+  testBoundary_canon_app_testBoundary_top_path 
+  testBoundary_canon_app_testBoundary_bottom_path.
+Definition null : BasicRegion :=
+  mkBasicRegion testBoundary_canon_app_testBoundary  none isolated  false false.
+Definition testBoundary_canon_app_testBoundary_top_path : list nat :=
+  0 :: 
+  1 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary_bottom_path : list nat :=
+  0 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary : Boundary :=
   mkBoundary nat 
-  (0 :: 1 :: 2 :: nil) 
-  (0 :: 2 :: nil).
-Definition testBasicRegionGenerator_region2 : BasicRegion :=
-  mkBasicRegion testBasicRegionGenerator_region2_boundary  isolated none  false false.
-Definition testBasicRegionGenerator_region3_boundary : Boundary :=
+  testBoundary_canon_app_testBoundary_top_path 
+  testBoundary_canon_app_testBoundary_bottom_path.
+Definition null : BasicRegion :=
+  mkBasicRegion testBoundary_canon_app_testBoundary  isolated none  false false.
+Definition testBoundary_canon_app_testBoundary_top_path : list nat :=
+  0 :: 
+  1 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary_bottom_path : list nat :=
+  0 :: 
+  2 :: 
+  nil.
+
+Definition testBoundary_canon_app_testBoundary : Boundary :=
   mkBoundary nat 
-  (0 :: 1 :: 2 :: nil) 
-  (0 :: 2 :: nil).
-Definition testBasicRegionGenerator_region3 : BasicRegion :=
-  mkBasicRegion testBasicRegionGenerator_region3_boundary  isolated isolated  false false.
+  testBoundary_canon_app_testBoundary_top_path 
+  testBoundary_canon_app_testBoundary_bottom_path.
+Definition null : BasicRegion :=
+  mkBasicRegion testBoundary_canon_app_testBoundary  isolated isolated  false false.
 Definition testBasicRegionGenerator : list BasicRegion :=
-  (testBasicRegionGenerator_region0 :: testBasicRegionGenerator_region1 :: testBasicRegionGenerator_region2 :: testBasicRegionGenerator_region3 :: nil).
+  testBasicRegionGenerator_br0 :: 
+  testBasicRegionGenerator_br1 :: 
+  testBasicRegionGenerator_br2 :: 
+  testBasicRegionGenerator_br3 :: 
+  nil.
+
 

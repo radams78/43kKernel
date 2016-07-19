@@ -9,7 +9,9 @@ public class CoqList<T extends CoqObject> extends ArrayList<T> implements CoqObj
 	testInvariants();
     }
 
-    public CoqList(String name) {
+    public CoqList(String name, String type) {
+	this.name = name;
+	this.type = type;
 	testInvariants();
     }
 
@@ -17,6 +19,12 @@ public class CoqList<T extends CoqObject> extends ArrayList<T> implements CoqObj
 	testInvariants();
     }
     
+    public boolean add(T x) {
+	boolean b = super.add(x);
+	testInvariants();
+	return b;
+    }
+
     public void testInvariants() {
 	for (T x : this) {
 	    assert x.getType().equals(type);
@@ -40,7 +48,7 @@ public class CoqList<T extends CoqObject> extends ArrayList<T> implements CoqObj
 	for (T x : this) {
 	    result += "  " + x.getName() + " :: \n";
 	}
-	result += "  :: nil.\n\n";
+	result += "  nil.\n\n";
 	return result;
     }
 }

@@ -17,7 +17,8 @@ public class BasicRegionGeneratorTest{
 					     "testBoundary");
 	Boundary[] boundaries = { testBoundary };
 	BoundaryGarden myGarden = new BoundaryGarden(new ArrayList<Boundary>(Arrays.asList(boundaries)),
-						     new ArrayList<String>(Arrays.asList("testBoundary")));
+						     new ArrayList<String>(Arrays.asList("testBoundary")),
+						     "myGarden");
 	BasicRegionGenerator testBasicRegionGenerator = new BasicRegionGenerator(myGarden, 0, "testBasicRegionGenerator");
 	writer.println(testBasicRegionGenerator.toCoq());
 	writer.close();

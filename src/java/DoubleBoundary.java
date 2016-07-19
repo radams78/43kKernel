@@ -2,13 +2,14 @@ import java.util.*;
 
 public class DoubleBoundary {
 	
-	ArrayList<Integer> topPath, middlePath, bottomPath;
-	Set<Integer> topPartVertices, bottomPartVertices;
-	
-	private VertexRenamer bottomBoundaryPrepInverse;
-	
-	private Boundary outerBoundary;
-	private VertexRenamer outerBoundaryUncanonizer;
+    ArrayList<Integer> topPath, middlePath, bottomPath;
+    Set<Integer> topPartVertices, bottomPartVertices;
+    
+    private VertexRenamer bottomBoundaryPrepInverse;
+    
+    private Boundary outerBoundary;
+    private VertexRenamer outerBoundaryUncanonizer;
+    private String name;
 	
     public DoubleBoundary(Boundary topBoundary, Boundary bottomBoundary, String name) {
 		VertexRenamer prepBottom = gluingRenamer(topBoundary, bottomBoundary);
@@ -31,6 +32,8 @@ public class DoubleBoundary {
 		VertexRenamer outerBoundaryCanonizer = outerBoundaryUncanonized.canonicalRenamer();
 		outerBoundary = outerBoundaryUncanonized.canonicalBoundary();
 		outerBoundaryUncanonizer = outerBoundaryCanonizer.inverseMap();
+
+		this.name = name;
 	}
 	
 	// Makes a renamer that prepares the bottom boundary to be glued to the top one.
@@ -48,7 +51,7 @@ public class DoubleBoundary {
 			}
 		}	
 		
-		return add100.compose(new VertexRenamer (newNameList));
+		return add100.compose(new VertexRenamer (newNameList, name + "_gluing"));
 	}
 
 	// neighbors in the double boundary
@@ -182,10 +185,10 @@ public class DoubleBoundary {
 			while(bt-->0) {bottomBoundaryTopPath.add(sc.nextInt());}
 			while(bb-->0) {bottomBoundaryBottomPath.add(sc.nextInt());}
 				
-			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
-			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath);
+			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath, "topB");
+			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath, "bottomB");
 
-			DoubleBoundary DB = new DoubleBoundary(topB, bottomB);
+			DoubleBoundary DB = new DoubleBoundary(topB, bottomB, "DB");
 			
 			System.out.println("Resulting Outer Boundary: ");
 			System.out.println(DB.getOuterBoundary());

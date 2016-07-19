@@ -27,6 +27,8 @@ public class BoundaryGarden {
     // -1 of it can't be
     private ArrayList<ArrayList<Integer> > gluingResult;
 
+    private String name;
+
     /**
      * Given a list of boundaries and a list of names,
      * populates the boundary garden, then calculates;
@@ -40,7 +42,7 @@ public class BoundaryGarden {
      * @param boundaryList     list of boundaries
      * @param boundaryNameList list of names in same order
      */
-    public BoundaryGarden (ArrayList<Boundary> boundaryList, ArrayList<String> boundaryNameList) {
+    public BoundaryGarden (ArrayList<Boundary> boundaryList, ArrayList<String> boundaryNameList, String name) {
 	boundaries = new ArrayList<Boundary> ();
 	for(Boundary b : boundaryList) {boundaries.add(b.canonicalBoundary());}
 	n = boundaries.size();
@@ -53,7 +55,8 @@ public class BoundaryGarden {
 	
 	// has to be done last
 	setSigCom();
-	
+
+	this.name = name;
     }
     
     public Boundary getBoundary(int p) {return boundaries.get(p);}
@@ -111,7 +114,7 @@ public class BoundaryGarden {
 	    sigCom.add(new ArrayList<SignatureComputer> ());
 	    for(int j = 0; j < n; ++j) {
 		if(canGlue(i,j)) {
-		    sigCom.get(i).add(new SignatureComputer(this, i, j));					
+		    sigCom.get(i).add(new SignatureComputer(this, i, j, name + "_" + i + "_" + j));					
 		} else {
 		    sigCom.get(i).add(null);
 		}
@@ -129,7 +132,7 @@ public class BoundaryGarden {
 	System.out.println("done.");
 	
 	System.out.print("Populating Boundary Garden ... ");
-	BoundaryGarden myGarden = new BoundaryGarden(BL.first, BL.second);
+	BoundaryGarden myGarden = new BoundaryGarden(BL.first, BL.second, "boundary_garden");
 	System.out.println("done.");
 	
 	myGarden.printGardenStats();
