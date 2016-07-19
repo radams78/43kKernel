@@ -13,12 +13,13 @@ public class BasicRegionGeneratorTest{
 	Integer[] topPath = {0, 1, 2};
 	Integer[] bottomPath = {0, 2};
 	Boundary testBoundary = new Boundary(new ArrayList<Integer>(Arrays.asList(topPath)), 
-					     new ArrayList<Integer>(Arrays.asList(bottomPath)));
+					     new ArrayList<Integer>(Arrays.asList(bottomPath)),
+					     "testBoundary");
 	Boundary[] boundaries = { testBoundary };
 	BoundaryGarden myGarden = new BoundaryGarden(new ArrayList<Boundary>(Arrays.asList(boundaries)),
 						     new ArrayList<String>(Arrays.asList("testBoundary")));
-	BasicRegionGenerator testBasicRegionGenerator = new BasicRegionGenerator(myGarden, 0);
-	testBasicRegionGenerator.toCoq("testBasicRegionGenerator", writer);
+	BasicRegionGenerator testBasicRegionGenerator = new BasicRegionGenerator(myGarden, 0, "testBasicRegionGenerator");
+	writer.println(testBasicRegionGenerator.toCoq());
 	writer.close();
     }
 }

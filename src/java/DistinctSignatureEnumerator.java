@@ -28,7 +28,7 @@ public class DistinctSignatureEnumerator {
 	    
 		System.out.print("Generating All Basic Regions ... ");
 		basicRegionsByBoundary = new ArrayList<BasicRegionGenerator> (); 
-		for(int i = 0; i < myGarden.n; ++i) {basicRegionsByBoundary.add(new BasicRegionGenerator(myGarden, i));}
+		for(int i = 0; i < myGarden.n; ++i) {basicRegionsByBoundary.add(new BasicRegionGenerator(myGarden, i, boundaryFile + i));}
 		System.out.println("done.");
 	
 		computedAllSignatureMinimal = false;
@@ -95,7 +95,7 @@ public class DistinctSignatureEnumerator {
 					// Add all extensions to queue
 					for(int bottomBoundaryID : myGarden.getGluesOnto(ID)) {
 						for(BasicRegion bottomRegion : basicRegionsByBoundary.get(bottomBoundaryID).getAllBasicRegions()) {
-							Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion);
+						    Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion, nextRegion.getName() + "_glue_" + bottomRegion.getName());
 							regionQueue.get(extension.size).add(extension);
 							totalQueueSize++;
 						}

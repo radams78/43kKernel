@@ -13,7 +13,9 @@ import java.io.*;
  */
 public class Boundary implements CoqObject {
     private ArrayList<Integer> topPath;
+    private CoqList<CoqInteger> topPathCoq;
     private ArrayList<Integer> bottomPath;
+    private CoqList<CoqInteger> bottomPathCoq;
     /** Number of vertices in both paths, including end-points. */
     public final int size;
     private String name;
@@ -25,15 +27,26 @@ public class Boundary implements CoqObject {
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 	this.topPath = new ArrayList<Integer> (topPath);
+	this.topPathCoq = new CoqList<CoqInteger> (name + "_top_path");
+	for (Integer n : topPath) {
+	    topPathCoq.add(new CoqInteger(n));
+	}
 	this.bottomPath = new ArrayList<Integer> (bottomPath);
 	this.size = vertexSet().size();
 	this.name = name;
     } 
 	
+    public CoqList<CoqInteger> getTopPathCoq() {
+	return new CoqList<CoqInteger>(topPathCoq);
+    }
+
+    public CoqList<CoqInteger> getBottomPathCoq() {
+	return new CoqList<CoqInteger>(bottomPathCoq);
+    }
+
     /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
     public ArrayList<Integer> vertexSet() {
-	ArrayList<Integer> ans = new ArrayList<Integer> ();
-	ans.addAll(topPath);
+	ArrayList<Integer> ans = new ArrayList<Integer> (topPath);
 	for(int i = 0; i < bottomPath.size(); ++i) {
 	    if(ans.contains(bottomPath.get(i))) continue;
 	    ans.add(bottomPath.get(i));
@@ -74,7 +87,7 @@ public class Boundary implements CoqObject {
     public ArrayList<Integer> getBottomPath(){return new ArrayList<Integer> (bottomPath);}
     
     /** Renumbers the vertices in the order given by {@link #vertexSet} */
-    public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet());}
+    public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet(), name + "_canon" );}
     /** The boundary, as renumbered by {@link #canonicalRenamer} */
     Boundary canonicalBoundary() {return canonicalRenamer().renamedBoundary(this);}
     
@@ -109,7 +122,7 @@ public class Boundary implements CoqObject {
 	if(bottomPathLength() != bottomBoundary.topPathLength()) return false;
 	
 	// FALSE if gluing creates a double edge on top and bottom that is not an edge in middle.
-	DoubleBoundary DB = new DoubleBoundary(this, bottomBoundary); 
+	DoubleBoundary DB = new DoubleBoundary(this, bottomBoundary, name + "_glue_" + bottomBoundary.getName()); 
 	List<Pair<Integer, Integer> > forbiddenEdges = PathOperator.pathEdges(DB.getTopPath());
 	forbiddenEdges.retainAll(PathOperator.pathEdges(DB.getBottomPath()));
 	forbiddenEdges.removeAll(PathOperator.pathEdges(DB.getMiddlePath()));
@@ -119,7 +132,7 @@ public class Boundary implements CoqObject {
     }
     
     /** glue bottomBoundary onto this and return the resulting outer boundary */
-    public Boundary glue(Boundary bottomBoundary) {return (new DoubleBoundary (this, bottomBoundary)).getOuterBoundary();}
+    public Boundary glue(Boundary bottomBoundary) {return (new DoubleBoundary (this, bottomBoundary, name + "_glue_" + bottomBoundary.getName())).getOuterBoundary();} //TODO Refactor
     
     
     /** Transforms an input pair to Johan Style (i.e (X,S) where S = VertexSet \ (N[X] u D) */
@@ -178,15 +191,17 @@ public class Boundary implements CoqObject {
     public String getName() {
 	return name;
     }
+
+    public String getType() { return "Boundary"; }
     
     public String toCoq() {
-	String result = getTopPath().toCoq();
-	result += getBottomPath().toCoq();
+	String result = topPathCoq.toCoq();
+	result += bottomPathCoq.toCoq();
 	result += "Definition " + name + " : Boundary :=\n";
 	result += "  mkBoundary nat \n  ";
-	result += getTopPath().getName();
+	result += topPathCoq.getName();
 	result += " \n  ";
-	result += getBottomPath().getName();
+	result += bottomPathCoq.getName();
 	result += ".\n";
 	return result;
     }

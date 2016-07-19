@@ -35,7 +35,7 @@ public class BasicRegion extends Region implements CoqObject {
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType, boolean hasLeftEdge, boolean hasRightEdge, String name) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType));
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), name);
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
 	
@@ -53,8 +53,6 @@ public class BasicRegion extends Region implements CoqObject {
 	
 	
 	setSignature();
-
-	this.name = name;
     }
     
     public void setSignature() {
@@ -126,7 +124,7 @@ public class BasicRegion extends Region implements CoqObject {
 	return getDescriptor().equals(br.getDescriptor());
     }
 
-    public String getName() { return name; }
+    public String getType() { return "BasicRegion"; } //TODO Refactor
     
     public String toCoq() {
 	String result = myBoundary.toCoq();

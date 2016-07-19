@@ -36,7 +36,8 @@ public class BasicRegionGenerator implements CoqObject {
     }
     
     private void setAllBasicRegions() {
-	List<BasicRegion> ans = new ArrayList<BasicRegion> ();
+	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name);
+	int counter = 0;
 	
 	boolean[] truthValues = {true, false};
 	
@@ -48,7 +49,8 @@ public class BasicRegionGenerator implements CoqObject {
 		    for(boolean hasRightEdge : truthValues) {
 			if(!verifyTypeAndEdge(rightInternalType, hasRightEdge, rightSideHasRoom, canHaveRightEdge)) continue;
 			
-			ans.add(new BasicRegion(myGarden, boundaryId, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge));
+			ans.add(new BasicRegion(myGarden, boundaryId, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge, name + "_br" + counter));
+			counter++;
 			
 		    }
 		}
@@ -82,7 +84,7 @@ public class BasicRegionGenerator implements CoqObject {
 	return name;
     }
 
-    public void toCoq(String name, PrintWriter writer) {
-	writer.println(toCoqq(name));
+    public String getType() {
+	return "list Region";
     }
 }

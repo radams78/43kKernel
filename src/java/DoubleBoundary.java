@@ -10,7 +10,7 @@ public class DoubleBoundary {
 	private Boundary outerBoundary;
 	private VertexRenamer outerBoundaryUncanonizer;
 	
-	public DoubleBoundary(Boundary topBoundary, Boundary bottomBoundary) {
+    public DoubleBoundary(Boundary topBoundary, Boundary bottomBoundary, String name) {
 		VertexRenamer prepBottom = gluingRenamer(topBoundary, bottomBoundary);
 		bottomBoundaryPrepInverse = prepBottom.inverseMap();
 
@@ -27,7 +27,7 @@ public class DoubleBoundary {
 		bottomPartVertices.addAll(middlePath);
 		bottomPartVertices.addAll(bottomPath);
 	
-		Boundary outerBoundaryUncanonized = new Boundary(topPath, bottomPath);
+		Boundary outerBoundaryUncanonized = new Boundary(topPath, bottomPath, name + "_outer");
 		VertexRenamer outerBoundaryCanonizer = outerBoundaryUncanonized.canonicalRenamer();
 		outerBoundary = outerBoundaryUncanonized.canonicalBoundary();
 		outerBoundaryUncanonizer = outerBoundaryCanonizer.inverseMap();

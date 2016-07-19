@@ -12,14 +12,15 @@ public class BoundaryListReader {
 		ArrayList<String> boundaryName = new ArrayList<String> ();
 		
 		while(sc.hasNext()) {
-			boundaryName.add(sc.next());
-			int tpl = sc.nextInt();
-			int bpl = sc.nextInt();
-			ArrayList<Integer> topPath = new ArrayList<Integer> ();
-			ArrayList<Integer> bottomPath = new ArrayList<Integer> ();
-			while(tpl-->0) {topPath.add(sc.nextInt());}
-			while(bpl-->0) {bottomPath.add(sc.nextInt());}
-			boundaries.add(new Boundary(topPath, bottomPath));
+		    String name = sc.next();
+		    boundaryName.add(name);
+		    int tpl = sc.nextInt();
+		    int bpl = sc.nextInt();
+		    ArrayList<Integer> topPath = new ArrayList<Integer> ();
+		    ArrayList<Integer> bottomPath = new ArrayList<Integer> ();
+		    while(tpl-->0) {topPath.add(sc.nextInt());}
+		    while(bpl-->0) {bottomPath.add(sc.nextInt());}
+		    boundaries.add(new Boundary(topPath, bottomPath, name));
 		}
 		
 		return new Pair<ArrayList<Boundary>, ArrayList<String> > (boundaries, boundaryName);

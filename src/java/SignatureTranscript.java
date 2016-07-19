@@ -67,13 +67,15 @@ public class SignatureTranscript {
 		// Read boundary
 		ArrayList<Integer> topPath = new ArrayList<Integer> ();
 		ArrayList<Integer> bottomPath = new ArrayList<Integer> ();
+
+		String name = sc.nextLine();
 			
 		int tps = sc.nextInt();
 		while(tps-->0) topPath.add(sc.nextInt());
 		int bps = sc.nextInt();
 		while(bps-->0) bottomPath.add(sc.nextInt());
 			
-		Boundary inBoundary = new Boundary(topPath, bottomPath);
+		Boundary inBoundary = new Boundary(topPath, bottomPath, name + "_boundary");
 		Boundary boundary = inBoundary.canonicalBoundary();
 		VertexRenamer canonizer = inBoundary.canonicalRenamer();
 			
