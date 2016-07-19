@@ -1,6 +1,6 @@
 import java.io.*;
 
-public abstract class Region {
+public abstract class Region implements CoqObject {
 
 	protected BoundaryGarden myGarden;
 	protected Boundary myBoundary;
@@ -24,6 +24,4 @@ public abstract class Region {
 	public SignatureTranscript getSignatureTranscript() {
 		return new SignatureTranscript(myBoundary, getSignature());
 	}
-
-    public abstract void toCoq(String name, PrintWriter writer);
 }

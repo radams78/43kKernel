@@ -2,18 +2,19 @@ import java.io.*;
 import java.util.*;
 
 // Generates all basic regions with a particular boundary.
-public class BasicRegionGenerator {
+public class BasicRegionGenerator implements CoqObject {
 
     BoundaryGarden myGarden;
     int boundaryId;
     Boundary myBoundary;
+    String name;
     
     boolean topPathIsLong,  bottomPathIsLong, leftSideHasRoom, rightSideHasRoom, canHaveLeftEdge, canHaveRightEdge;
     
-    List<BasicRegion> basicRegions;
+    CoqList<BasicRegion> basicRegions;
     List<BasicRegion> getAllBasicRegions() {return basicRegions;}
     
-    BasicRegionGenerator(BoundaryGarden g, int boundaryId) {
+    BasicRegionGenerator(BoundaryGarden g, int boundaryId, String name) {
 	this.myGarden = g;
 	this.boundaryId = boundaryId;
 	this.myBoundary = myGarden.getBoundary(boundaryId);
@@ -30,6 +31,8 @@ public class BasicRegionGenerator {
 	    && !myBoundary.areNeighbors(myBoundary.topPathVertex(2), myBoundary.bottomPathVertex(2));
 	
 	setAllBasicRegions();
+
+	this.name = name;
     }
     
     private void setAllBasicRegions() {
@@ -71,20 +74,12 @@ public class BasicRegionGenerator {
 	return true;
     }
 
+    public String toCoq() {
+	return basicRegions.toCoq();
+    }
 
-    
-    public String toCoqq(String name) {
-	String result = "";
-	List<String> names = new ArrayList<String>();
-	for (int i = 0; i < basicRegions.size(); i++) {
-	    String regionName = name + "_region" + i;
-	    result += basicRegions.get(i).toCoqq(regionName);
-	    names.add(regionName);
-	}
-	result += "Definition " + name + " : list BasicRegion :=\n  ";
-	result += Coq.iterableToCoqq(names);
-	result += ".\n";
-	return result;
+    public String getName() {
+	return name;
     }
 
     public void toCoq(String name, PrintWriter writer) {
