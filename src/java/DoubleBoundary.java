@@ -159,7 +159,12 @@ public class DoubleBoundary {
 		return ans;
 	}
 	
-	
+    public List<Pair<InputPair, InputPair> > allInputPairsMaybeX(boolean X, InputPair input) {
+	if (X)
+	    return allInputPairsWithX(input);
+	else
+	    return allInputPairsNoX(input);
+    }
 	public String toString() {return "<" + topPath.toString() + " - " + middlePath.toString() + " - " + bottomPath.toString() + ">";}
 	
 	// -------------------- TESTING
