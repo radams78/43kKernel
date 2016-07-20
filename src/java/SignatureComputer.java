@@ -32,6 +32,9 @@ public class SignatureComputer {
 	this.name = name;
     }
     
+    private DoubleBoundary doubleBoundary() {
+	return new DoubleBoundary(myGarden.getBoundary(topBoundaryID), myGarden.getBoundary(bottomBoundaryID), name + "_double");
+    }
     
     // COMPUTE PLUS ZERO
     private void setPlusZero() {

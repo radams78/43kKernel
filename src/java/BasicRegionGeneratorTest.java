@@ -20,6 +20,7 @@ public class BasicRegionGeneratorTest{
 						     new ArrayList<String>(Arrays.asList("testBoundary")),
 						     "myGarden");
 	BasicRegionGenerator testBasicRegionGenerator = new BasicRegionGenerator(myGarden, 0, "testBasicRegionGenerator");
+	writer.println(myGarden.getBoundary(0).toCoq());
 	writer.println(testBasicRegionGenerator.toCoq());
 	writer.close();
     }

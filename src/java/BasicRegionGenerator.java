@@ -76,6 +76,9 @@ public class BasicRegionGenerator implements CoqObject {
 	return true;
     }
 
+    /*
+     * @pre Coq: requires definition of myGarden.getBoundary(boundaryID) earlier in proof script
+     */
     public String toCoq() {
 	return basicRegions.toCoq();
     }

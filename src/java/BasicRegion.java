@@ -28,8 +28,6 @@ public class BasicRegion extends Region implements CoqObject {
     private BasicRegionDescriptor desc;
     public RegionDescriptor getDescriptor() {return desc;}
     
-    private String name;
-    
     private static int computeSize(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType) {
 	return g.getBoundary(boundaryID).size + numVerticesByType[leftInternalType] + numVerticesByType[rightInternalType]; 
     }
@@ -125,10 +123,12 @@ public class BasicRegion extends Region implements CoqObject {
     }
 
     public String getType() { return "BasicRegion"; } //TODO Refactor
-    
+
+    /*
+     * @pre Coq: Requires definition of myBoundary earlier in script.
+     */
     public String toCoq() {
-	String result = myBoundary.toCoq();
-	result += "Definition " + name + " : BasicRegion :=\n";
+	String result = "Definition " + getName() + " : BasicRegion :=\n";
 	result += "  mkBasicRegion " + myBoundary.getName();
 	result += "  " + typeNames[leftInternalType] + " " + typeNames[rightInternalType];
 	result += "  " + desc.hasLeftEdge + " " + desc.hasRightEdge + ".\n";
