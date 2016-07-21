@@ -13,6 +13,7 @@ import java.io.*;
  */
 public class Boundary {
     static final String COQTYPE = "Boundary";
+    static final String CONSTRUCTOR = "mkBoundary";
 
     private ArrayList<Integer> topPath;
     private ArrayList<Integer> bottomPath;
@@ -179,10 +180,10 @@ public class Boundary {
     }
 
     public CoqObject toCoq() {
-	String definition = "mkBoundary nat \n  ";
+	String definition = CONSTRUCTOR + " " + CoqObject.NAT +  "\n  ";
 	definition += CoqObject.coqListInteger(topPath);
 	definition += " \n  ";
-	definition += CoqObject.coqListInteger(bottomPath); //TODO Duplication
+	definition += CoqObject.coqListInteger(bottomPath); 
 	return new CoqObject(COQTYPE, definition);
     }
 }

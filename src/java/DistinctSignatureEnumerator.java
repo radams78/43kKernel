@@ -28,7 +28,7 @@ public class DistinctSignatureEnumerator {
 	    
 		System.out.print("Generating All Basic Regions ... ");
 		basicRegionsByBoundary = new ArrayList<BasicRegionGenerator> (); 
-		for(int i = 0; i < myGarden.n; ++i) {basicRegionsByBoundary.add(new BasicRegionGenerator(myGarden, i, boundaryFile + i));}
+		for(int i = 0; i < myGarden.n; ++i) {basicRegionsByBoundary.add(new BasicRegionGenerator(myGarden, i));}
 		System.out.println("done.");
 	
 		computedAllSignatureMinimal = false;

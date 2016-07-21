@@ -14,7 +14,7 @@ public class BasicRegionGenerator {
     List<BasicRegion> basicRegions;
     List<BasicRegion> getAllBasicRegions() {return basicRegions;}
     
-    BasicRegionGenerator(BoundaryGarden g, int boundaryId, String name) {
+    BasicRegionGenerator(BoundaryGarden g, int boundaryId) {
 	this.myGarden = g;
 	this.boundaryId = boundaryId;
 	this.myBoundary = myGarden.getBoundary(boundaryId);
@@ -29,8 +29,6 @@ public class BasicRegionGenerator {
 	
 	this.canHaveRightEdge = 		topPathIsLong && bottomPathIsLong 
 	    && !myBoundary.areNeighbors(myBoundary.topPathVertex(2), myBoundary.bottomPathVertex(2));
-	
-	this.name = name;
 
 	setAllBasicRegions();
     }
@@ -83,15 +81,6 @@ public class BasicRegionGenerator {
 	ArrayList<CoqObject> basicRegionsCoq = new ArrayList<CoqObject>();
 	for (BasicRegion region : basicRegions)
 	    basicRegionsCoq.add(region.toCoq());
-	return CoqObject.coqList(basicRegionsCoq, "BasicRegion"); //TODO Duplication with coqListInteger
-    }
-
-    //TODO Remove below
-    public String getName() {
-	return name;
-    }
-
-    public String getType() {
-	return "list Region";
+	return CoqObject.coqList(basicRegionsCoq, BasicRegion.COQTYPE); //TODO Duplication with coqListInteger
     }
 }

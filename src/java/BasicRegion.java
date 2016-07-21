@@ -2,6 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class BasicRegion extends Region {
+    final static String COQTYPE = "BasicRegion";
     
     public final static int none = 0,
 	isolated = 1,
