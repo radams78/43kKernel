@@ -11,11 +11,9 @@ import java.io.*;
  *
  * Invariant: The top and bottom paths should have common end-points, called <i>anchors</i>.
  */
-public class Boundary implements CoqObject {
+public class Boundary {
     private ArrayList<Integer> topPath;
-    private CoqList<CoqInteger> topPathCoq;
     private ArrayList<Integer> bottomPath;
-    private CoqList<CoqInteger> bottomPathCoq;
     /** Number of vertices in both paths, including end-points. */
     public final int size;
     private String name;
@@ -27,27 +25,11 @@ public class Boundary implements CoqObject {
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 	this.topPath = new ArrayList<Integer> (topPath);
-	this.topPathCoq = new CoqList<CoqInteger> (name + "_top_path", "nat");
-	for (Integer n : topPath) {
-	    topPathCoq.add(new CoqInteger(n));
-	}
 	this.bottomPath = new ArrayList<Integer> (bottomPath);
-	this.bottomPathCoq = new CoqList<CoqInteger> (name + "_bottom_path", "nat");
-	for (Integer n : bottomPath) {
-	    bottomPathCoq.add(new CoqInteger(n));
-	} //TODO Duplication
 	this.size = vertexSet().size();
 	this.name = name;
     } 
 	
-    public CoqList<CoqInteger> getTopPathCoq() {
-	return new CoqList<CoqInteger>(topPathCoq);
-    }
-
-    public CoqList<CoqInteger> getBottomPathCoq() {
-	return new CoqList<CoqInteger>(bottomPathCoq);
-    }
-
     /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
     public ArrayList<Integer> vertexSet() {
 	ArrayList<Integer> ans = new ArrayList<Integer> (topPath);
@@ -126,7 +108,7 @@ public class Boundary implements CoqObject {
 	if(bottomPathLength() != bottomBoundary.topPathLength()) return false;
 	
 	// FALSE if gluing creates a double edge on top and bottom that is not an edge in middle.
-	DoubleBoundary DB = new DoubleBoundary(this, bottomBoundary, name + "_glue_" + bottomBoundary.getName()); 
+	DoubleBoundary DB = preglue(bottomBoundary);
 	List<Pair<Integer, Integer> > forbiddenEdges = PathOperator.pathEdges(DB.getTopPath());
 	forbiddenEdges.retainAll(PathOperator.pathEdges(DB.getBottomPath()));
 	forbiddenEdges.removeAll(PathOperator.pathEdges(DB.getMiddlePath()));
@@ -135,8 +117,10 @@ public class Boundary implements CoqObject {
 	return true;	
     }
     
+    public DoubleBoundary preglue(Boundary bottomBoundary) {return new DoubleBoundary(this, bottomBoundary, name + "_glue_" + bottomBoundary.getName());}
+
     /** glue bottomBoundary onto this and return the resulting outer boundary */
-    public Boundary glue(Boundary bottomBoundary) {return (new DoubleBoundary (this, bottomBoundary, name + "_glue_" + bottomBoundary.getName())).getOuterBoundary();} //TODO Refactor
+    public Boundary glue(Boundary bottomBoundary) {return preglue(bottomBoundary).getOuterBoundary();}
     
     
     /** Transforms an input pair to Johan Style (i.e (X,S) where S = VertexSet \ (N[X] u D) */
@@ -197,16 +181,12 @@ public class Boundary implements CoqObject {
     }
 
     public String getType() { return "Boundary"; }
-    
-    public String toCoq() {
-	String result = topPathCoq.toCoq();
-	result += bottomPathCoq.toCoq();
-	result += "Definition " + name + " : Boundary :=\n";
-	result += "  mkBoundary nat \n  ";
-	result += topPathCoq.getName();
-	result += " \n  ";
-	result += bottomPathCoq.getName();
-	result += ".\n";
-	return result;
+
+    public CoqObject toCoq() {
+	String definition = "mkBoundary nat \n  ";
+	definition += "(" + CoqObject.coqListInteger(topPath) + ")";
+	definition += " \n  ";
+	definition += "(" + CoqObject.coqListInteger(bottomPath) + ")"; //TODO Duplication
+	return new CoqObject("Boundary", definition);
     }
 }

@@ -95,7 +95,7 @@ public class DistinctSignatureEnumerator {
 					// Add all extensions to queue
 					for(int bottomBoundaryID : myGarden.getGluesOnto(ID)) {
 						for(BasicRegion bottomRegion : basicRegionsByBoundary.get(bottomBoundaryID).getAllBasicRegions()) {
-						    Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion, nextRegion.getName() + "_glue_" + bottomRegion.getName());
+						    Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion);
 							regionQueue.get(extension.size).add(extension);
 							totalQueueSize++;
 						}

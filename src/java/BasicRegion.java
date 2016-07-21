@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class BasicRegion extends Region implements CoqObject {
+public class BasicRegion extends Region {
     
     public final static int none = 0,
 	isolated = 1,
@@ -32,8 +32,8 @@ public class BasicRegion extends Region implements CoqObject {
 	return g.getBoundary(boundaryID).size + numVerticesByType[leftInternalType] + numVerticesByType[rightInternalType]; 
     }
     
-    BasicRegion(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType, boolean hasLeftEdge, boolean hasRightEdge, String name) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), name);
+    BasicRegion(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType));
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
 	
@@ -127,11 +127,9 @@ public class BasicRegion extends Region implements CoqObject {
     /*
      * @pre Coq: Requires definition of myBoundary earlier in script.
      */
-    public String toCoq() {
-	String result = "Definition " + getName() + " : BasicRegion :=\n";
-	result += "  mkBasicRegion " + myBoundary.getName();
-	result += "  " + typeNames[leftInternalType] + " " + typeNames[rightInternalType];
-	result += "  " + desc.hasLeftEdge + " " + desc.hasRightEdge + ".\n";
-	return result;
+    public CoqObject toCoq() {
+	return new CoqObject("BasicRegion", 
+			     "mkBasicRegion (" + myBoundary.toCoq() + ") " + typeNames[leftInternalType] + " " + typeNames[rightInternalType] + 
+			     " " + desc.hasLeftEdge + " " + desc.hasRightEdge); //TODO Duplication
     }
 }

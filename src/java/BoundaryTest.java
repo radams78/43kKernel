@@ -13,7 +13,7 @@ public class BoundaryTest{
 	Boundary testBoundary = new Boundary(new ArrayList<Integer>(Arrays.asList(topPath)), 
 					     new ArrayList<Integer>(Arrays.asList(bottomPath)),
 					     "testBoundary");
-	writer.println(testBoundary.toCoq());
+	writer.println(testBoundary.toCoq().definition("testBoundary"));
 	writer.close();
     }
 

@@ -10,10 +10,9 @@ public class CompositeRegion extends Region {
     
     public RegionDescriptor getDescriptor() {return desc;}
     
-    CompositeRegion(BoundaryGarden g, Region topRegion, BasicRegion bottomRegion, String name) {
+    CompositeRegion(BoundaryGarden g, Region topRegion, BasicRegion bottomRegion) {
 	super(g, g.getGluingResult(topRegion.boundaryID, bottomRegion.boundaryID), 
-	      topRegion.size + bottomRegion.size - (g.getBoundary(topRegion.boundaryID).bottomPathLength() + 2),
-	      name);
+	      topRegion.size + bottomRegion.size - (g.getBoundary(topRegion.boundaryID).bottomPathLength() + 2));
 	
 	desc = new CompositeRegionDescriptor(topRegion.getDescriptor(), (BasicRegionDescriptor) bottomRegion.getDescriptor());
 	signatureIsComputed = false;
@@ -32,5 +31,5 @@ public class CompositeRegion extends Region {
 	return sig;	
     }
     
-    public String toCoq() { return ""; }
+    public CoqObject toCoq() { return null; } //TODO Force value
 }

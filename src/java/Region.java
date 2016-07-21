@@ -1,21 +1,17 @@
 import java.io.*;
 
-public abstract class Region implements CoqObject {
-
+public abstract class Region {
     protected BoundaryGarden myGarden;
     protected Boundary myBoundary;
     
     public final int boundaryID;
     public final int size;
 
-    private String name;
-    
-    Region(BoundaryGarden g, int ID, int s, String name) {
+    Region(BoundaryGarden g, int ID, int s) {
 	myGarden = g;
 	boundaryID = ID;
 	size = s;
 	myBoundary = myGarden.getBoundary(boundaryID);
-	this.name = name;
     }
     
     public abstract Signature getSignature(); 
@@ -27,8 +23,6 @@ public abstract class Region implements CoqObject {
     public SignatureTranscript getSignatureTranscript() {
 	return new SignatureTranscript(myBoundary, getSignature());
     }
-    
-    public String getName() { return name; }
 
-    public String getType() { return "Region"; }
+    public abstract CoqObject toCoq();
 }

@@ -1,0 +1,77 @@
+src/java/CoqObject.java:22: error: cannot find symbol
+	    value += x.getDefinition() + " :: ";
+	              ^
+  symbol:   method getDefinition()
+  location: variable x of type CoqObject
+src/java/Boundary.java:186: error: cannot find symbol
+	String result = topPathCoq.toCoq();
+	                ^
+  symbol:   variable topPathCoq
+  location: class Boundary
+src/java/Boundary.java:187: error: cannot find symbol
+	result += bottomPathCoq.toCoq();
+	          ^
+  symbol:   variable bottomPathCoq
+  location: class Boundary
+src/java/Boundary.java:190: error: cannot find symbol
+	result += topPathCoq.getName();
+	          ^
+  symbol:   variable topPathCoq
+  location: class Boundary
+src/java/Boundary.java:192: error: cannot find symbol
+	result += bottomPathCoq.getName();
+	          ^
+  symbol:   variable bottomPathCoq
+  location: class Boundary
+src/java/BasicRegionGenerator.java:39: error: cannot find symbol
+	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name, "BasicRegion");
+	^
+  symbol:   class CoqList
+  location: class BasicRegionGenerator
+src/java/BasicRegionGenerator.java:39: error: cannot find symbol
+	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name, "BasicRegion");
+	                               ^
+  symbol:   class CoqList
+  location: class BasicRegionGenerator
+src/java/BasicRegionGenerator.java:52: error: constructor BasicRegion in class BasicRegion cannot be applied to given types;
+			ans.add(new BasicRegion(myGarden, boundaryId, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge, name + "_br" + counter));
+			        ^
+  required: BoundaryGarden,int,int,int,boolean,boolean
+  found: BoundaryGarden,int,int,int,boolean,boolean,String
+  reason: actual and formal argument lists differ in length
+src/java/BasicRegionGenerator.java:83: error: cannot find symbol
+	return basicRegions.toCoq();
+	                   ^
+  symbol:   method toCoq()
+  location: variable basicRegions of type List<BasicRegion>
+src/java/BasicRegionTest.java:22: error: constructor BasicRegion in class BasicRegion cannot be applied to given types;
+	BasicRegion testBasicRegion = new BasicRegion(myGarden, 0, 1, 2, true, false, "testBasicRegion");
+	                              ^
+  required: BoundaryGarden,int,int,int,boolean,boolean
+  found: BoundaryGarden,int,int,int,boolean,boolean,String
+  reason: actual and formal argument lists differ in length
+src/java/CompositeRegion.java:3: error: CompositeRegion is not abstract and does not override abstract method toCoq() in Region
+public class CompositeRegion extends Region {
+       ^
+src/java/CompositeRegion.java:35: error: toCoq() in CompositeRegion cannot override toCoq() in Region
+    public String toCoq() { return ""; }
+                  ^
+  return type String is not compatible with CoqObject
+src/java/CompositeRegion.java:14: error: constructor Region in class Region cannot be applied to given types;
+	super(g, g.getGluingResult(topRegion.boundaryID, bottomRegion.boundaryID), 
+	^
+  required: BoundaryGarden,int,int
+  found: BoundaryGarden,int,int,String
+  reason: actual and formal argument lists differ in length
+src/java/DistinctSignatureEnumerator.java:98: error: cannot find symbol
+						    Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion, nextRegion.getName() + "_glue_" + bottomRegion.getName());
+						                                                                                         ^
+  symbol:   method getName()
+  location: variable nextRegion of type Region
+src/java/DistinctSignatureEnumerator.java:98: error: cannot find symbol
+						    Region extension = new CompositeRegion(myGarden, nextRegion, bottomRegion, nextRegion.getName() + "_glue_" + bottomRegion.getName());
+						                                                                                                                             ^
+  symbol:   method getName()
+  location: variable bottomRegion of type BasicRegion
+15 errors
+make: *** [bin] Error 1

@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 // Generates all basic regions with a particular boundary.
-public class BasicRegionGenerator implements CoqObject {
+public class BasicRegionGenerator {
 
     BoundaryGarden myGarden;
     int boundaryId;
@@ -11,7 +11,7 @@ public class BasicRegionGenerator implements CoqObject {
     
     boolean topPathIsLong,  bottomPathIsLong, leftSideHasRoom, rightSideHasRoom, canHaveLeftEdge, canHaveRightEdge;
     
-    CoqList<BasicRegion> basicRegions;
+    List<BasicRegion> basicRegions;
     List<BasicRegion> getAllBasicRegions() {return basicRegions;}
     
     BasicRegionGenerator(BoundaryGarden g, int boundaryId, String name) {
@@ -36,7 +36,7 @@ public class BasicRegionGenerator implements CoqObject {
     }
     
     private void setAllBasicRegions() {
-	CoqList<BasicRegion> ans = new CoqList<BasicRegion> (name, "BasicRegion");
+	ArrayList<BasicRegion> ans = new ArrayList<BasicRegion>();
 	int counter = 0;
 	
 	boolean[] truthValues = {true, false};
@@ -49,7 +49,7 @@ public class BasicRegionGenerator implements CoqObject {
 		    for(boolean hasRightEdge : truthValues) {
 			if(!verifyTypeAndEdge(rightInternalType, hasRightEdge, rightSideHasRoom, canHaveRightEdge)) continue;
 			
-			ans.add(new BasicRegion(myGarden, boundaryId, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge, name + "_br" + counter));
+			ans.add(new BasicRegion(myGarden, boundaryId, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge));
 			counter++;
 			
 		    }
@@ -79,10 +79,14 @@ public class BasicRegionGenerator implements CoqObject {
     /*
      * @pre Coq: requires definition of myGarden.getBoundary(boundaryID) earlier in proof script
      */
-    public String toCoq() {
-	return basicRegions.toCoq();
+    public CoqObject toCoq() {
+	ArrayList<CoqObject> basicRegionsCoq = new ArrayList<CoqObject>();
+	for (BasicRegion region : basicRegions)
+	    basicRegionsCoq.add(region.toCoq());
+	return CoqObject.coqList(basicRegionsCoq, "BasicRegion"); //TODO Duplication with coqListInteger
     }
 
+    //TODO Remove below
     public String getName() {
 	return name;
     }

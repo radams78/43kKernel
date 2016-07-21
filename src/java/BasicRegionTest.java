@@ -19,8 +19,8 @@ public class BasicRegionTest{
 	BoundaryGarden myGarden = new BoundaryGarden(new ArrayList<Boundary>(Arrays.asList(boundaries)),
 						     new ArrayList<String>(Arrays.asList("testBoundary")),
 						     "myGarden");
-	BasicRegion testBasicRegion = new BasicRegion(myGarden, 0, 1, 2, true, false, "testBasicRegion");
-	writer.println(testBasicRegion.toCoq());
+	BasicRegion testBasicRegion = new BasicRegion(myGarden, 0, 1, 2, true, false);
+	writer.println(testBasicRegion.toCoq().definition("testBasicRegion"));
 	writer.close();
     }
 }
