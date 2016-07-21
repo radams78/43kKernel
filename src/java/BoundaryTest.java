@@ -11,8 +11,7 @@ public class BoundaryTest{
 	Integer[] topPath = {0, 1, 2};
 	Integer[] bottomPath = {0, 2};
 	Boundary testBoundary = new Boundary(new ArrayList<Integer>(Arrays.asList(topPath)), 
-					     new ArrayList<Integer>(Arrays.asList(bottomPath)),
-					     "testBoundary");
+					     new ArrayList<Integer>(Arrays.asList(bottomPath)));
 	writer.println(testBoundary.toCoq().definition("testBoundary"));
 	writer.close();
     }

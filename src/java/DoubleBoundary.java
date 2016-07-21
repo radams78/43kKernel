@@ -11,7 +11,7 @@ public class DoubleBoundary {
     private VertexRenamer outerBoundaryUncanonizer;
     private String name;
 	
-    public DoubleBoundary(Boundary topBoundary, Boundary bottomBoundary, String name) {
+    public DoubleBoundary(Boundary topBoundary, Boundary bottomBoundary) {
 		VertexRenamer prepBottom = gluingRenamer(topBoundary, bottomBoundary);
 		bottomBoundaryPrepInverse = prepBottom.inverseMap();
 
@@ -28,7 +28,7 @@ public class DoubleBoundary {
 		bottomPartVertices.addAll(middlePath);
 		bottomPartVertices.addAll(bottomPath);
 	
-		Boundary outerBoundaryUncanonized = new Boundary(topPath, bottomPath, name + "_outer");
+		Boundary outerBoundaryUncanonized = new Boundary(topPath, bottomPath);
 		VertexRenamer outerBoundaryCanonizer = outerBoundaryUncanonized.canonicalRenamer();
 		outerBoundary = outerBoundaryUncanonized.canonicalBoundary();
 		outerBoundaryUncanonizer = outerBoundaryCanonizer.inverseMap();
@@ -51,7 +51,7 @@ public class DoubleBoundary {
 			}
 		}	
 		
-		return add100.compose(new VertexRenamer (newNameList, name + "_gluing"));
+		return add100.compose(new VertexRenamer (newNameList));
 	}
 
 	// neighbors in the double boundary
@@ -190,10 +190,10 @@ public class DoubleBoundary {
 			while(bt-->0) {bottomBoundaryTopPath.add(sc.nextInt());}
 			while(bb-->0) {bottomBoundaryBottomPath.add(sc.nextInt());}
 				
-			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath, "topB");
-			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath, "bottomB");
+			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
+			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath);
 
-			DoubleBoundary DB = new DoubleBoundary(topB, bottomB, "DB");
+			DoubleBoundary DB = new DoubleBoundary(topB, bottomB);
 			
 			System.out.println("Resulting Outer Boundary: ");
 			System.out.println(DB.getOuterBoundary());

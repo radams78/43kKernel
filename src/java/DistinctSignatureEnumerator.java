@@ -23,7 +23,7 @@ public class DistinctSignatureEnumerator {
 	    System.out.println("done.");
 	    
 	    System.out.print("Populating Boundary Garden ... ");
-	    myGarden = new BoundaryGarden(BL.first, BL.second, boundaryFile + "_garden");
+	    myGarden = new BoundaryGarden(BL.first, BL.second);
 	    System.out.println("done.");
 	    
 		System.out.print("Generating All Basic Regions ... ");

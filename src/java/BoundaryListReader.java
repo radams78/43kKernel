@@ -20,7 +20,7 @@ public class BoundaryListReader {
 		    ArrayList<Integer> bottomPath = new ArrayList<Integer> ();
 		    while(tpl-->0) {topPath.add(sc.nextInt());}
 		    while(bpl-->0) {bottomPath.add(sc.nextInt());}
-		    boundaries.add(new Boundary(topPath, bottomPath, name));
+		    boundaries.add(new Boundary(topPath, bottomPath));
 		}
 		
 		return new Pair<ArrayList<Boundary>, ArrayList<String> > (boundaries, boundaryName);

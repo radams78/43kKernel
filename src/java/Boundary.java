@@ -12,6 +12,8 @@ import java.io.*;
  * Invariant: The top and bottom paths should have common end-points, called <i>anchors</i>.
  */
 public class Boundary {
+    static final String COQTYPE = "Boundary";
+
     private ArrayList<Integer> topPath;
     private ArrayList<Integer> bottomPath;
     /** Number of vertices in both paths, including end-points. */
@@ -21,7 +23,7 @@ public class Boundary {
     /**
      * Precondition: topPath and bottomPath have the same first and last elements
      */
-    public Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath, String name) {
+    public Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath) {
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 	this.topPath = new ArrayList<Integer> (topPath);
@@ -73,7 +75,7 @@ public class Boundary {
     public ArrayList<Integer> getBottomPath(){return new ArrayList<Integer> (bottomPath);}
     
     /** Renumbers the vertices in the order given by {@link #vertexSet} */
-    public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet(), name + "_canon" );}
+    public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet());}
     /** The boundary, as renumbered by {@link #canonicalRenamer} */
     Boundary canonicalBoundary() {return canonicalRenamer().renamedBoundary(this);}
     
@@ -117,7 +119,7 @@ public class Boundary {
 	return true;	
     }
     
-    public DoubleBoundary preglue(Boundary bottomBoundary) {return new DoubleBoundary(this, bottomBoundary, name + "_glue_" + bottomBoundary.getName());}
+    public DoubleBoundary preglue(Boundary bottomBoundary) {return new DoubleBoundary(this, bottomBoundary);}
 
     /** glue bottomBoundary onto this and return the resulting outer boundary */
     public Boundary glue(Boundary bottomBoundary) {return preglue(bottomBoundary).getOuterBoundary();}
@@ -162,7 +164,7 @@ public class Boundary {
 	while(tt-->0) {topBoundaryTopPath.add(sc.nextInt());}
 	while(tb-->0) {topBoundaryBottomPath.add(sc.nextInt());}
 	
-	Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath, name);
+	Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
 	
 	System.out.println("Resulting Boundary: ");
 	System.out.println(topB);
@@ -175,18 +177,12 @@ public class Boundary {
 	
 	sc.close();
     }
-    
-    public String getName() {
-	return name;
-    }
-
-    public String getType() { return "Boundary"; }
 
     public CoqObject toCoq() {
 	String definition = "mkBoundary nat \n  ";
-	definition += "(" + CoqObject.coqListInteger(topPath) + ")";
+	definition += CoqObject.coqListInteger(topPath);
 	definition += " \n  ";
-	definition += "(" + CoqObject.coqListInteger(bottomPath) + ")"; //TODO Duplication
-	return new CoqObject("Boundary", definition);
+	definition += CoqObject.coqListInteger(bottomPath); //TODO Duplication
+	return new CoqObject(COQTYPE, definition);
     }
 }

@@ -42,7 +42,7 @@ public class BoundaryGarden {
      * @param boundaryList     list of boundaries
      * @param boundaryNameList list of names in same order
      */
-    public BoundaryGarden (ArrayList<Boundary> boundaryList, ArrayList<String> boundaryNameList, String name) {
+    public BoundaryGarden (ArrayList<Boundary> boundaryList, ArrayList<String> boundaryNameList) {
 	boundaries = new ArrayList<Boundary> ();
 	for(Boundary b : boundaryList) {boundaries.add(b.canonicalBoundary());}
 	n = boundaries.size();
@@ -132,7 +132,7 @@ public class BoundaryGarden {
 	System.out.println("done.");
 	
 	System.out.print("Populating Boundary Garden ... ");
-	BoundaryGarden myGarden = new BoundaryGarden(BL.first, BL.second, "boundary_garden");
+	BoundaryGarden myGarden = new BoundaryGarden(BL.first, BL.second);
 	System.out.println("done.");
 	
 	myGarden.printGardenStats();

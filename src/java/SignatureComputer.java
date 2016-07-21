@@ -29,7 +29,7 @@ public class SignatureComputer {
 	this.outerInputs = myGarden.getAllInputs(outerBoundaryID);
 	this.totalSize = 0;
 
-	DoubleBoundary DB = new DoubleBoundary(myGarden.getBoundary(topBoundaryID), myGarden.getBoundary(bottomBoundaryID), name + "_double");
+	DoubleBoundary DB = new DoubleBoundary(myGarden.getBoundary(topBoundaryID), myGarden.getBoundary(bottomBoundaryID));
 	totalSize += setPlusB(plusZero, DB, false);
 	totalSize += setPlusB(plusOne, DB, true);
 

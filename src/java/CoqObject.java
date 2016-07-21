@@ -20,7 +20,7 @@ public class CoqObject {
 
     public String getType() { return type; }
     public String getValue() { return value; }
-    public String toString() { return value; }
+    public String toString() { return "(" + value + ")"; }
 
     public String definition(String name) {
 	return(DEFINITION + name + COLON + type + DEFEQ + value + PERIOD);
