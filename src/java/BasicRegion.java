@@ -3,6 +3,7 @@ import java.io.*;
 
 public class BasicRegion extends Region {
     final static String COQTYPE = "BasicRegion";
+    final static String CONSTRUCTOR = "mkBasicRegion";
     
     public final static int none = 0,
 	isolated = 1,
@@ -123,14 +124,12 @@ public class BasicRegion extends Region {
 	return getDescriptor().equals(br.getDescriptor());
     }
 
-    public String getType() { return "BasicRegion"; } //TODO Refactor
-
     /*
      * @pre Coq: Requires definition of myBoundary earlier in script.
      */
     public CoqObject toCoq() {
-	return new CoqObject("BasicRegion", 
-			     "mkBasicRegion (" + myBoundary.toCoq() + ") " + typeNames[leftInternalType] + " " + typeNames[rightInternalType] + 
+	return new CoqObject(COQTYPE, 
+			     CONSTRUCTOR + " (" + myBoundary.toCoq() + ") " + typeNames[leftInternalType] + " " + typeNames[rightInternalType] + 
 			     " " + desc.hasLeftEdge + " " + desc.hasRightEdge); //TODO Duplication
     }
 }
