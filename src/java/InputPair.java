@@ -4,6 +4,6 @@ import java.util.*;
 /*
 * Wrapper class.
 */
-public class InputPair extends Pair<Set<Integer>, Set<Integer> > {
-	InputPair(Set<Integer> f, Set<Integer> s) {super(f,s);}
+public class InputPair extends Pair<Set<Vertex>, Set<Vertex> > {
+	InputPair(Set<Vertex> f, Set<Vertex> s) {super(f,s);}
 }

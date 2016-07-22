@@ -5,24 +5,9 @@ public class BasicRegion extends Region {
     final static String COQTYPE = "BasicRegion";
     final static String CONSTRUCTOR = "mkBasicRegion";
     
-    public final static int none = 0,
-	isolated = 1,
-	top = 2,
-	bottom = 3,
-	universal = 4,
-	bothTopAndBottom = 5;
+    private List<Pair<Vertex, Vertex> > internalEdges;
     
-    public final static int[] internalTypes = {0,1,2,3,4,5};
-    public final static int[] numVerticesByType = {0,1,1,1,1,2};
-    
-    public final static String[] typeNames = {"none", "isolated", "top", "bottom", "universal", "top+bottom"};
-    
-    public final static List<Integer> hasTopVertex = new LinkedList<Integer> (Arrays.asList(top,universal,bothTopAndBottom));
-    public final static List<Integer> hasBottomVertex = new LinkedList<Integer> (Arrays.asList(bottom,universal,bothTopAndBottom));
-    
-    private List<Pair<Integer, Integer> > internalEdges;
-    
-    public final int leftInternalType, rightInternalType;
+    public final InternalType leftInternalType, rightInternalType;
     
     private Signature mySignature;
     public Signature getSignature() {return mySignature;}
@@ -30,11 +15,11 @@ public class BasicRegion extends Region {
     private BasicRegionDescriptor desc;
     public RegionDescriptor getDescriptor() {return desc;}
     
-    private static int computeSize(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType) {
-	return g.getBoundary(boundaryID).size + numVerticesByType[leftInternalType] + numVerticesByType[rightInternalType]; 
+    private static int computeSize(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType) {
+	return g.getBoundary(boundaryID).size + leftInternalType.getNumVertices() + rightInternalType.getNumVertices(); 
     }
     
-    BasicRegion(BoundaryGarden g, int boundaryID, int leftInternalType, int rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
+    BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
 	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType));
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
@@ -42,13 +27,13 @@ public class BasicRegion extends Region {
 	// Set the descriptor
 	this.desc = new BasicRegionDescriptor(g, boundaryID, leftInternalType, rightInternalType, hasLeftEdge, hasRightEdge);
 	
-	internalEdges = new LinkedList<Pair<Integer, Integer> > ();
+	internalEdges = new LinkedList<Pair<Vertex, Vertex> > ();
 	if(hasLeftEdge) {
-	    internalEdges.add(new Pair<Integer, Integer> (myBoundary.topPathVertex(1), myBoundary.bottomPathVertex(1)));			
+	    internalEdges.add(new Pair<Vertex, Vertex> (myBoundary.topPathVertex(1), myBoundary.bottomPathVertex(1)));			
 	}
 	
 	if(hasRightEdge) {
-	    internalEdges.add(new Pair<Integer, Integer> (myBoundary.topPathVertex(2), myBoundary.bottomPathVertex(2)));			
+	    internalEdges.add(new Pair<Vertex, Vertex> (myBoundary.topPathVertex(2), myBoundary.bottomPathVertex(2)));			
 	}
 	
 	
@@ -63,33 +48,33 @@ public class BasicRegion extends Region {
 	mySignature = new Signature(sig);
     }
     
-    private int computeSignatureAt(Set<Integer> X, Set<Integer> D) {
+    private int computeSignatureAt(Set<Vertex> X, Set<Vertex> D) {
 	if(dominatesAll(X,D)) return 0;
 	
-	for(int v : myBoundary.vertexSet()) {
-	    Set<Integer> bigX = new TreeSet<Integer> (X);
+	for(Vertex v : myBoundary.vertexSet()) {
+	    Set<Vertex> bigX = new TreeSet<Vertex> (X);
 	    bigX.add(v);
 	    if(dominatesAll(bigX, D)) return 1;
 	}
 	return 2;
     }
     
-    private boolean dominatesAll(Set<Integer> X, Set<Integer> D) {
+    private boolean dominatesAll(Set<Vertex> X, Set<Vertex> D) {
 	return dominatesBoundary(X,D) && dominatesInternal(X);
     }
     
-    private boolean dominatesBoundary(Set<Integer> X, Set<Integer> D) {
-	Set<Integer> NX =  myBoundary.neighbors(X);
-	for(Pair<Integer, Integer> edge : internalEdges) {
+    private boolean dominatesBoundary(Set<Vertex> X, Set<Vertex> D) {
+	Set<Vertex> NX =  myBoundary.neighbors(X);
+	for(Pair<Vertex, Vertex> edge : internalEdges) {
 	    if(X.contains(edge.first)) NX.add(edge.second);
 	    if(X.contains(edge.second)) NX.add(edge.first);
 	}
 	return NX.containsAll(D);
     }
     
-    private boolean dominatesInternal(Set<Integer> X) {return dominatesLeftInternal(X) && dominatesRightInternal(X);}
+    private boolean dominatesInternal(Set<Vertex> X) {return dominatesLeftInternal(X) && dominatesRightInternal(X);}
     
-    private boolean dominatesLeftInternal(Set<Integer> X) {
+    private boolean dominatesLeftInternal(Set<Vertex> X) {
 	if(X.contains(myBoundary.topPathVertex(0))) return true;
 	
 	switch(leftInternalType) {
@@ -104,7 +89,7 @@ public class BasicRegion extends Region {
 	
     }
     
-    private boolean dominatesRightInternal(Set<Integer> X) {
+    private boolean dominatesRightInternal(Set<Vertex> X) {
 	if(X.contains(myBoundary.topPathVertex(myBoundary.topPathLength() + 1))) return true;
 	
 	switch(rightInternalType) {
@@ -129,7 +114,7 @@ public class BasicRegion extends Region {
      */
     public CoqObject toCoq() {
 	return new CoqObject(COQTYPE, 
-			     CONSTRUCTOR + " (" + myBoundary.toCoq() + ") " + typeNames[leftInternalType] + " " + typeNames[rightInternalType] + 
+			     CONSTRUCTOR + " (" + myBoundary.toCoq() + ") " + leftInternalType + " " + rightInternalType + 
 			     " " + desc.hasLeftEdge + " " + desc.hasRightEdge); //TODO Duplication
     }
 }

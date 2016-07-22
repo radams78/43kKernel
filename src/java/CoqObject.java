@@ -26,9 +26,9 @@ public class CoqObject {
 	return(DEFINITION + name + COLON + type + DEFEQ + value + PERIOD);
     }
 
-    public static CoqObject coqList(List<CoqObject> list, String type) {
+    public static <T extends CoqObject> CoqObject coqList(List<T> list, String type) {
 	String value = "";
-	for (CoqObject x : list) {
+	for (T x : list) {
 	    assert x.getType().equals(type);
 	    value += x.getValue() + CONS;
 	}

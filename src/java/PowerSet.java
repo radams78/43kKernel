@@ -1,19 +1,19 @@
 import java.util.*;
 
-public class PowerSet extends ArrayList<TreeSet<Integer> > {
+public class PowerSet<T> extends ArrayList<TreeSet<T> > {
 	
 	// autoadd
 	private static final long serialVersionUID = 2968669418764153495L;
 
-	public PowerSet(TreeSet<Integer> S) {
+	public PowerSet(TreeSet<T> S) {
 		super();
 		
 		if(S.isEmpty()) {
-			add(new TreeSet<Integer> ());
+			add(new TreeSet<T> ());
 			return;
 		}
 		
-		TreeSet<Integer> SS = new TreeSet<Integer> (S);
+		TreeSet<T> SS = new TreeSet<T> (S);
 		SS.remove(S.first());
 		
 		PowerSet allSmall = new PowerSet(SS);

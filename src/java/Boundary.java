@@ -15,8 +15,8 @@ public class Boundary {
     static final String COQTYPE = "Boundary";
     static final String CONSTRUCTOR = "mkBoundary";
 
-    private ArrayList<Integer> topPath;
-    private ArrayList<Integer> bottomPath;
+    private ArrayList<Vertex> topPath;
+    private ArrayList<Vertex> bottomPath;
     /** Number of vertices in both paths, including end-points. */
     public final int size;
     private String name;
@@ -24,18 +24,18 @@ public class Boundary {
     /**
      * Precondition: topPath and bottomPath have the same first and last elements
      */
-    public Boundary(ArrayList<Integer> topPath, ArrayList<Integer> bottomPath) {
+    public Boundary(ArrayList<Vertex> topPath, ArrayList<Vertex> bottomPath) {
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
-	this.topPath = new ArrayList<Integer> (topPath);
-	this.bottomPath = new ArrayList<Integer> (bottomPath);
+	this.topPath = new ArrayList<Vertex> (topPath);
+	this.bottomPath = new ArrayList<Vertex> (bottomPath);
 	this.size = vertexSet().size();
 	this.name = name;
     } 
 	
     /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
-    public ArrayList<Integer> vertexSet() {
-	ArrayList<Integer> ans = new ArrayList<Integer> (topPath);
+    public ArrayList<Vertex> vertexSet() {
+	ArrayList<Vertex> ans = new ArrayList<Vertex> (topPath);
 	for(int i = 0; i < bottomPath.size(); ++i) {
 	    if(ans.contains(bottomPath.get(i))) continue;
 	    ans.add(bottomPath.get(i));
@@ -44,15 +44,15 @@ public class Boundary {
     }
     
     /** Set of all neigbours of a given set of points */
-    public Set<Integer> neighbors(Set<Integer> S) {
-	Set<Integer> ans = PathOperator.pathNeighbors(topPath, S);	
+    public Set<Vertex> neighbors(Set<Vertex> S) {
+	Set<Vertex> ans = PathOperator.pathNeighbors(topPath, S);	
 	ans.addAll(PathOperator.pathNeighbors(bottomPath, S));
 	return ans;
     }
     
     /** Tests whether two points are neighbours in the boundary */
-    public boolean areNeighbors(int u, int v) {
-	Set<Integer> S = new TreeSet<Integer> ();
+    public boolean areNeighbors(Vertex u, Vertex v) {
+	Set<Vertex> S = new TreeSet<Vertex> ();
 	S.add(u);
 	return neighbors(S).contains(v);
     }
@@ -60,20 +60,20 @@ public class Boundary {
     public int topPathLength() {return topPath.size() - 2;}
     public int bottomPathLength() {return bottomPath.size() - 2;}
     
-    public int leftAnchor() {return topPath.get(0);}
-    public int rightAnchor() {return topPath.get(topPath.size() - 1);}
-    public Set<Integer> getAnchors() {
-	Set<Integer> ans = new TreeSet<Integer> ();
+    public Vertex leftAnchor() {return topPath.get(0);}
+    public Vertex rightAnchor() {return topPath.get(topPath.size() - 1);}
+    public Set<Vertex> getAnchors() {
+	Set<Vertex> ans = new TreeSet<Vertex> ();
 	ans.add(leftAnchor());
 	ans.add(rightAnchor());
 	return ans;
     }
     
-	public int topPathVertex(int p) {return topPath.get(p);}
-    public int bottomPathVertex(int p) {return bottomPath.get(p);}
+    public Vertex topPathVertex(int p) {return topPath.get(p);}
+    public Vertex bottomPathVertex(int p) {return bottomPath.get(p);}
     
-    public ArrayList<Integer> getTopPath(){return new ArrayList<Integer> (topPath);}
-    public ArrayList<Integer> getBottomPath(){return new ArrayList<Integer> (bottomPath);}
+    public ArrayList<Vertex> getTopPath(){return new ArrayList<Vertex> (topPath);}
+    public ArrayList<Vertex> getBottomPath(){return new ArrayList<Vertex> (bottomPath);}
     
     /** Renumbers the vertices in the order given by {@link #vertexSet} */
     public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet());}
@@ -91,13 +91,13 @@ public class Boundary {
     /** An input (D, X) is valid if D is disjoint from N(X) */
     public ArrayList<InputPair> allValidInputs() {
 	ArrayList<InputPair> ans = new ArrayList<InputPair> ();
-	TreeSet<Integer> allVertices = new TreeSet<Integer> (vertexSet());
-	PowerSet allVertexSubsets = new PowerSet(allVertices);
-	for(TreeSet<Integer> X : allVertexSubsets) {
-	    TreeSet<Integer> possibleD = new TreeSet<Integer> (allVertices);
+	TreeSet<Vertex> allVertices = new TreeSet<Vertex> (vertexSet());
+	PowerSet<Vertex> allVertexSubsets = new PowerSet<Vertex>(allVertices);
+	for(TreeSet<Vertex> X : allVertexSubsets) {
+	    TreeSet<Vertex> possibleD = new TreeSet<Vertex> (allVertices);
 	    possibleD.removeAll(neighbors(X));
-	    PowerSet allD = new PowerSet(possibleD);
-	    for(TreeSet<Integer> D : allD) {
+	    PowerSet<Vertex> allD = new PowerSet<Vertex>(possibleD);
+	    for(TreeSet<Vertex> D : allD) {
 		ans.add(new InputPair(X,D));
 	    }
 	}
@@ -112,7 +112,7 @@ public class Boundary {
 	
 	// FALSE if gluing creates a double edge on top and bottom that is not an edge in middle.
 	DoubleBoundary DB = preglue(bottomBoundary);
-	List<Pair<Integer, Integer> > forbiddenEdges = PathOperator.pathEdges(DB.getTopPath());
+	List<Pair<Vertex, Vertex> > forbiddenEdges = PathOperator.pathEdges(DB.getTopPath());
 	forbiddenEdges.retainAll(PathOperator.pathEdges(DB.getBottomPath()));
 	forbiddenEdges.removeAll(PathOperator.pathEdges(DB.getMiddlePath()));
 	if(!forbiddenEdges.isEmpty()) return false;
@@ -128,11 +128,11 @@ public class Boundary {
     
     /** Transforms an input pair to Johan Style (i.e (X,S) where S = VertexSet \ (N[X] u D) */
 	public InputPair toJohanStyle(InputPair inp) {
-	    Set<Integer> X = new TreeSet<Integer> (inp.first);
-	    Set<Integer> D = new TreeSet<Integer> (inp.second);
-	    Set<Integer> NX = neighbors(X);
+	    Set<Vertex> X = new TreeSet<Vertex> (inp.first);
+	    Set<Vertex> D = new TreeSet<Vertex> (inp.second);
+	    Set<Vertex> NX = neighbors(X);
 	    
-	    Set<Integer> S = new TreeSet<Integer> (vertexSet());
+	    Set<Vertex> S = new TreeSet<Vertex> (vertexSet());
 	    S.removeAll(NX);
 	    S.removeAll(D);
 	    
@@ -147,7 +147,7 @@ public class Boundary {
     
     // TESTING
     public static void main(String[] args) {
-	ArrayList<Integer> topBoundaryTopPath, topBoundaryBottomPath;
+	ArrayList<Vertex> topBoundaryTopPath, topBoundaryBottomPath;
 	
 	Scanner sc = new Scanner(System.in);
 	
@@ -159,11 +159,11 @@ public class Boundary {
 	tt = sc.nextInt();
 	tb = sc.nextInt();
 	
-	topBoundaryTopPath = new ArrayList<Integer>();	
-	topBoundaryBottomPath = new ArrayList<Integer>();
+	topBoundaryTopPath = new ArrayList<Vertex>();	
+	topBoundaryBottomPath = new ArrayList<Vertex>();
 	
-	while(tt-->0) {topBoundaryTopPath.add(sc.nextInt());}
-	while(tb-->0) {topBoundaryBottomPath.add(sc.nextInt());}
+	while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
+	while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
 	
 	Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
 	
@@ -181,9 +181,9 @@ public class Boundary {
 
     public CoqObject toCoq() {
 	String definition = CONSTRUCTOR + " " + CoqObject.NAT +  "\n  ";
-	definition += CoqObject.coqListInteger(topPath);
+	definition += CoqObject.coqList(topPath, CoqObject.NAT);
 	definition += " \n  ";
-	definition += CoqObject.coqListInteger(bottomPath); 
+	definition += CoqObject.coqList(bottomPath, CoqObject.NAT); 
 	return new CoqObject(COQTYPE, definition);
     }
 }

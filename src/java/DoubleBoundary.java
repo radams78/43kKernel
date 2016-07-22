@@ -2,8 +2,8 @@ import java.util.*;
 
 public class DoubleBoundary {
 	
-    ArrayList<Integer> topPath, middlePath, bottomPath;
-    Set<Integer> topPartVertices, bottomPartVertices;
+    ArrayList<Vertex> topPath, middlePath, bottomPath;
+    Set<Vertex> topPartVertices, bottomPartVertices;
     
     private VertexRenamer bottomBoundaryPrepInverse;
     
@@ -20,11 +20,11 @@ public class DoubleBoundary {
 		middlePath = topBoundary.getBottomPath();
 		bottomPath = tempBottomBoundary.getBottomPath();
 
-		topPartVertices = new TreeSet<Integer> ();
+		topPartVertices = new TreeSet<Vertex> ();
 		topPartVertices.addAll(topPath);
 		topPartVertices.addAll(middlePath);
 	
-		bottomPartVertices = new TreeSet<Integer> ();
+		bottomPartVertices = new TreeSet<Vertex> ();
 		bottomPartVertices.addAll(middlePath);
 		bottomPartVertices.addAll(bottomPath);
 	
@@ -41,7 +41,7 @@ public class DoubleBoundary {
 		VertexRenamer add100 = bottomBoundary.canonicalRenamer().addX(100);
 		Boundary tempBottomBoundary = add100.renamedBoundary(bottomBoundary);
 		
-		TreeMap<Integer, Integer> newNameList = new TreeMap<Integer, Integer> ();
+		TreeMap<Vertex, Vertex> newNameList = new TreeMap<Vertex, Vertex> ();
 		for(int i = 0; i < tempBottomBoundary.topPathLength() + 2; ++i) newNameList.put(tempBottomBoundary.topPathVertex(i), topBoundary.bottomPathVertex(i));
 		for(int i = 0; i < tempBottomBoundary.bottomPathLength() + 2; ++i)  {
 			if(newNameList.containsKey(tempBottomBoundary.bottomPathVertex(i))) {
@@ -55,8 +55,8 @@ public class DoubleBoundary {
 	}
 
 	// neighbors in the double boundary
-	public Set<Integer> neighbors(Set<Integer> S) {
-		Set<Integer> ans = new TreeSet<Integer> ();
+	public Set<Vertex> neighbors(Set<Vertex> S) {
+		Set<Vertex> ans = new TreeSet<Vertex> ();
 		ans = PathOperator.pathNeighbors(topPath, S);	
 		ans.addAll(PathOperator.pathNeighbors(middlePath, S));
 		ans.addAll(PathOperator.pathNeighbors(bottomPath, S));
@@ -71,27 +71,27 @@ public class DoubleBoundary {
 	public VertexRenamer getOuterBoundaryUncanonizer() {return outerBoundaryUncanonizer;}
 	
 	// Outputs the internal middle path vertices
-	public Set<Integer> internalVertices() {
-		Set<Integer> ans = new TreeSet<Integer> (middlePath);
+	public Set<Vertex> internalVertices() {
+		Set<Vertex> ans = new TreeSet<Vertex> (middlePath);
 		ans.removeAll(topPath);
 		ans.removeAll(bottomPath);
 		return ans;
 	}
 	
-	public ArrayList<Integer> getTopPath() {return new ArrayList<Integer> (topPath);}
-	public ArrayList<Integer> getMiddlePath() {return new ArrayList<Integer> (middlePath);}
-	public ArrayList<Integer> getBottomPath() {return new ArrayList<Integer> (bottomPath);}
+	public ArrayList<Vertex> getTopPath() {return new ArrayList<Vertex> (topPath);}
+	public ArrayList<Vertex> getMiddlePath() {return new ArrayList<Vertex> (middlePath);}
+	public ArrayList<Vertex> getBottomPath() {return new ArrayList<Vertex> (bottomPath);}
 	
-	public Set<Integer> outerToDouble (Set<Integer> S) {return getOuterBoundaryUncanonizer().renamedSet(S);}
+	public Set<Vertex> outerToDouble (Set<Vertex> S) {return getOuterBoundaryUncanonizer().renamedSet(S);}
 	
-	public Set<Integer> doubleToTop (Set<Integer> S) {
-		TreeSet<Integer> ans = new TreeSet<Integer> (S);
+	public Set<Vertex> doubleToTop (Set<Vertex> S) {
+		TreeSet<Vertex> ans = new TreeSet<Vertex> (S);
 		ans.retainAll(topPartVertices);
 		return ans;
 	}
 	
-	public Set<Integer> doubleToBottom (Set<Integer> S) {
-		TreeSet<Integer> ans = new TreeSet<Integer> (S);
+	public Set<Vertex> doubleToBottom (Set<Vertex> S) {
+		TreeSet<Vertex> ans = new TreeSet<Vertex> (S);
 		ans.retainAll(bottomPartVertices);
 		return getBottomBoundaryPrepInverse().renamedSet(ans);
 	}	
@@ -101,41 +101,41 @@ public class DoubleBoundary {
 	public List<Pair<InputPair, InputPair> > allInputPairs(InputPair input, int addX) {
 		List<Pair<InputPair, InputPair> > ans = new ArrayList<Pair<InputPair, InputPair> > ();
 		
-		Set<Integer> outerX = new TreeSet<Integer> (input.first);
-		Set<Integer> outerD = new TreeSet<Integer> (input.second);
+		Set<Vertex> outerX = new TreeSet<Vertex> (input.first);
+		Set<Vertex> outerD = new TreeSet<Vertex> (input.second);
 		outerD.removeAll(outerBoundary.neighbors(outerX));
 		
-		Set<Integer> doubleX = outerToDouble(outerX);
-		Set<Integer> doubleD = outerToDouble(outerD);
+		Set<Vertex> doubleX = outerToDouble(outerX);
+		Set<Vertex> doubleD = outerToDouble(outerD);
 		if(addX >= 0) {
 			if(doubleX.contains(addX)) return ans;
 			doubleX.add(addX);
 		}
 		doubleD.removeAll(neighbors(doubleX));
 		
-		Set<Integer> topX = doubleToTop(doubleX);
-		Set<Integer> bottomX = doubleToBottom(doubleX);
+		Set<Vertex> topX = doubleToTop(doubleX);
+		Set<Vertex> bottomX = doubleToBottom(doubleX);
 		
-		Set<Integer> doubleKnownD = new TreeSet<Integer> (doubleD);
+		Set<Vertex> doubleKnownD = new TreeSet<Vertex> (doubleD);
 		doubleKnownD.removeAll(middlePath);
 		
 		// A vertex is unresolved if: (a) it is on the middle path and ((i) it is in D or (ii) it is internal to the double region) 
 		// But neighbors of X are automatically resolved.
-		TreeSet<Integer> doubleUnresolvedD = new TreeSet<Integer> (doubleD);
+		TreeSet<Vertex> doubleUnresolvedD = new TreeSet<Vertex> (doubleD);
 		doubleUnresolvedD.retainAll(middlePath); 
 		doubleUnresolvedD.addAll(internalVertices()); 
 		doubleUnresolvedD.removeAll(neighbors(doubleX)); 
 
 		PowerSet allToTopD = new PowerSet(doubleUnresolvedD);
-		for(TreeSet<Integer> S : allToTopD) {
-			Set<Integer> resolvedUpD = new TreeSet<Integer> (doubleKnownD);
+		for(TreeSet<Vertex> S : allToTopD) {
+			Set<Vertex> resolvedUpD = new TreeSet<Vertex> (doubleKnownD);
 			resolvedUpD.addAll(S);
-			Set<Integer> topD = doubleToTop(resolvedUpD);
+			Set<Vertex> topD = doubleToTop(resolvedUpD);
 			
-			Set<Integer> resolvedDownD = new TreeSet<Integer> (doubleUnresolvedD);
+			Set<Vertex> resolvedDownD = new TreeSet<Vertex> (doubleUnresolvedD);
 			resolvedDownD.removeAll(S);
 			resolvedDownD.addAll(doubleKnownD);
-			Set<Integer> bottomD = doubleToBottom(resolvedDownD);
+			Set<Vertex> bottomD = doubleToBottom(resolvedDownD);
 			
 			InputPair topInput = new InputPair(topX, topD);
 			InputPair bottomInput = new InputPair(bottomX, bottomD);
@@ -169,7 +169,7 @@ public class DoubleBoundary {
 	
 	// -------------------- TESTING
 	public static void main(String[] args) {
-			ArrayList<Integer> topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
+			ArrayList<Vertex> topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
 			
 			Scanner sc = new Scanner(System.in);
 			
@@ -180,10 +180,10 @@ public class DoubleBoundary {
 			bt = sc.nextInt();
 			bb = sc.nextInt();
 			
-			topBoundaryTopPath = new ArrayList<Integer>();	
-			topBoundaryBottomPath = new ArrayList<Integer>();
-			bottomBoundaryTopPath = new ArrayList<Integer>();
-			bottomBoundaryBottomPath = new ArrayList<Integer>();
+			topBoundaryTopPath = new ArrayList<Vertex>();	
+			topBoundaryBottomPath = new ArrayList<Vertex>();
+			bottomBoundaryTopPath = new ArrayList<Vertex>();
+			bottomBoundaryBottomPath = new ArrayList<Vertex>();
 
 			while(tt-->0) {topBoundaryTopPath.add(sc.nextInt());}
 			while(tb-->0) {topBoundaryBottomPath.add(sc.nextInt());}
@@ -201,8 +201,8 @@ public class DoubleBoundary {
 			System.out.println("X length, D length");
 			int xl = sc.nextInt();
 			int dl = sc.nextInt();
-			TreeSet<Integer> X = new TreeSet<Integer> ();
-			TreeSet<Integer> D = new TreeSet<Integer> ();
+			TreeSet<Vertex> X = new TreeSet<Vertex> ();
+			TreeSet<Vertex> D = new TreeSet<Vertex> ();
 			while(xl-->0) {X.add(sc.nextInt());}
 			while(dl-->0) {D.add(sc.nextInt());}
 			InputPair inp = new InputPair(X,D);
