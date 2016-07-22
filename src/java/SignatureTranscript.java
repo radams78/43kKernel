@@ -65,15 +65,15 @@ public class SignatureTranscript {
 	// Reads a single signature transcript from a scanner.
 	public static SignatureTranscript readFromScanner(Scanner sc, boolean johanStyle) {
 		// Read boundary
-		ArrayList<Integer> topPath = new ArrayList<Integer> ();
-		ArrayList<Integer> bottomPath = new ArrayList<Integer> ();
+		ArrayList<Vertex> topPath = new ArrayList<Vertex> ();
+		ArrayList<Vertex> bottomPath = new ArrayList<Vertex> ();
 
 		String name = sc.nextLine();
 			
 		int tps = sc.nextInt();
-		while(tps-->0) topPath.add(sc.nextInt());
+		while(tps-->0) topPath.add(new Vertex(sc.nextInt()));
 		int bps = sc.nextInt();
-		while(bps-->0) bottomPath.add(sc.nextInt());
+		while(bps-->0) bottomPath.add(new Vertex(sc.nextInt()));
 			
 		Boundary inBoundary = new Boundary(topPath, bottomPath);
 		Boundary boundary = inBoundary.canonicalBoundary();
@@ -85,19 +85,19 @@ public class SignatureTranscript {
 		assert numInputs == allInputs.size() : "Wrong number of inputs";
 			
 		ArrayList<Integer> sig = new ArrayList<Integer> ();
-		for(int i = 0; i < numInputs; ++i) sig.add(0);
+		for(int i = 0; i < numInputs; ++i) sig.add(0); // TODO Magic number?
 			
 		// Read the signature.
 		while(numInputs-->0) {
-			Set<Integer> X = new TreeSet<Integer> ();
-			Set<Integer> D = new TreeSet<Integer> ();
+			Set<Vertex> X = new TreeSet<Vertex> ();
+			Set<Vertex> D = new TreeSet<Vertex> ();
 				
 			int xs = sc.nextInt();
-			while(xs-->0) X.add(sc.nextInt());
+			while(xs-->0) X.add(new Vertex(sc.nextInt()));
 			X = canonizer.renamedSet(X);
 				
 			int ds = sc.nextInt();
-			while(ds-->0) D.add(sc.nextInt());
+			while(ds-->0) D.add(new Vertex(sc.nextInt()));
 			D = canonizer.renamedSet(D);
 				
 			InputPair inp = new InputPair(X,D);
@@ -113,10 +113,10 @@ public class SignatureTranscript {
 		return new SignatureTranscript(boundary, new Signature(sig)); 
 	}
 	
-	static String intSetToString (Set<Integer> X) {
+	static <T> String intSetToString (Set<T> X) {
 		StringBuffer ans = new StringBuffer();
 		ans.append(X.size() + " ");
-		for(int x : X) ans.append(x + " ");
+		for(T x : X) ans.append(x + " ");
 		return ans.toString();
 	}
 	

@@ -109,7 +109,7 @@ public class DoubleBoundary {
 		Set<Vertex> doubleD = outerToDouble(outerD);
 		if(addX >= 0) {
 			if(doubleX.contains(addX)) return ans;
-			doubleX.add(addX);
+			doubleX.add(new Vertex(addX));
 		}
 		doubleD.removeAll(neighbors(doubleX));
 		
@@ -126,7 +126,7 @@ public class DoubleBoundary {
 		doubleUnresolvedD.addAll(internalVertices()); 
 		doubleUnresolvedD.removeAll(neighbors(doubleX)); 
 
-		PowerSet allToTopD = new PowerSet(doubleUnresolvedD);
+		PowerSet<Vertex> allToTopD = new PowerSet<Vertex>(doubleUnresolvedD);
 		for(TreeSet<Vertex> S : allToTopD) {
 			Set<Vertex> resolvedUpD = new TreeSet<Vertex> (doubleKnownD);
 			resolvedUpD.addAll(S);
@@ -155,7 +155,7 @@ public class DoubleBoundary {
 	// middle path - this incurs a cost of 1 that should be added when computing the signature.
 	public List<Pair<InputPair, InputPair> > allInputPairsWithX(InputPair input) {
 		ArrayList<Pair<InputPair, InputPair> > ans = new ArrayList<Pair<InputPair, InputPair> > ();
-		for(int addX : middlePath) {ans.addAll(allInputPairs(input, addX));}
+		for(Vertex addX : middlePath) {ans.addAll(allInputPairs(input, addX));}
 		return ans;
 	}
 	
