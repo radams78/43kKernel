@@ -12,14 +12,7 @@ public class BasicRegionGeneratorTest{
 	for (String imp : IMPORTS)
 	    writer.println(REQUIRE_IMPORT + " " + imp + ".");
 	writer.println();
-	Vertex a = new Vertex(0);
-	Vertex b = new Vertex(1);
-	Vertex c = new Vertex(2);
-	Vertex[] topPath = {a, b, c};
-	Vertex[] bottomPath = {a, c};
-	Boundary testBoundary = new Boundary(new ArrayList<Vertex>(Arrays.asList(topPath)), 
-					     new ArrayList<Vertex>(Arrays.asList(bottomPath)));
-	Boundary[] boundaries = { testBoundary };
+	Boundary[] boundaries = { BoundaryTest.testBoundary };
 	BoundaryGarden myGarden = new BoundaryGarden(new ArrayList<Boundary>(Arrays.asList(boundaries)),
 						     new ArrayList<String>(Arrays.asList("testBoundary")));
 	BasicRegionGenerator testBasicRegionGenerator = new BasicRegionGenerator(myGarden, 0);
