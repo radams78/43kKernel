@@ -26,10 +26,20 @@ public class CoqObject {
 	return(DEFINITION + name + COLON + type + DEFEQ + value + PERIOD);
     }
 
+    <T extends CoqObject> CoqObject(List<T> list, String type) {
+	this.value = "";
+	for (T x : list) {
+	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
+	    this.value += x.getValue() + CONS;
+	}
+	this.value += NIL;
+	this.type = LIST + " " + type;
+    }
+
     public static <T extends CoqObject> CoqObject coqList(List<T> list, String type) {
 	String value = "";
 	for (T x : list) {
-	    assert x.getType().equals(type);
+	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
 	    value += x.getValue() + CONS;
 	}
 	value += NIL;

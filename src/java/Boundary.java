@@ -11,7 +11,7 @@ import java.io.*;
  *
  * Invariant: The top and bottom paths should have common end-points, called <i>anchors</i>.
  */
-public class Boundary {
+public class Boundary extends CoqObject {
     static final String COQTYPE = "Boundary";
     static final String CONSTRUCTOR = "mkBoundary";
 
@@ -25,6 +25,8 @@ public class Boundary {
      * Precondition: topPath and bottomPath have the same first and last elements
      */
     public Boundary(ArrayList<Vertex> topPath, ArrayList<Vertex> bottomPath) {
+	super("", CONSTRUCTOR + " " + CoqObject.NAT +  "\n  " + CoqObject.coqList(topPath, CoqObject.NAT) + " \n " + 
+	      CoqObject.coqList(bottomPath, CoqObject.NAT));
 	assert topPath.get(0) == bottomPath.get(0);
 	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
 	this.topPath = new ArrayList<Vertex> (topPath);

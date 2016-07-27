@@ -7,8 +7,8 @@ public abstract class Region extends CoqObject {
     public final int boundaryID;
     public final int size;
 
-    Region(BoundaryGarden g, int ID, int s) {
-	super("", ""); // TODO Force values here
+    Region(BoundaryGarden g, int ID, int s, String type, String value) {
+	super(type, value); // TODO Force values here
 	myGarden = g;
 	boundaryID = ID;
 	size = s;
@@ -24,6 +24,4 @@ public abstract class Region extends CoqObject {
     public SignatureTranscript getSignatureTranscript() {
 	return new SignatureTranscript(myBoundary, getSignature());
     }
-
-    public abstract CoqObject toCoq();
 }

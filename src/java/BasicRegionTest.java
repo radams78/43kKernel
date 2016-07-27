@@ -2,16 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class BasicRegionTest{
+    static final String OUTPUT_FILE = "BasicRegionTest.v";
+    static final String[] IMPORTS = {"List", "BasicRegion", "Boundary", "Region"}; 
+    static final BasicRegion testBasicRegion = new BasicRegion(BoundaryGardenTest.testGarden, 0, InternalType.isolated, InternalType.top, true, false);
+    static final String NAME = "testBasicRegion";
 
     public static void main(String[] args) throws FileNotFoundException {
-	PrintWriter writer = new PrintWriter(args[0] + "/BasicRegionTest.v");
-	writer.println("Require Import List.");
-	writer.println("Require Import BasicRegion.");
-	writer.println("Require Import Boundary.");
-	writer.println("Require Import Region.");
-	writer.println();
-	BasicRegion testBasicRegion = new BasicRegion(BoundaryGardenTest.testGarden, 0, InternalType.isolated, InternalType.top, true, false);
-	writer.println(testBasicRegion.toCoq().definition("testBasicRegion"));
-	writer.close();
+	CoqObjectTest.testObject(args[0], OUTPUT_FILE, IMPORTS, testBasicRegion, NAME);
     }
 }

@@ -20,7 +20,7 @@ public class BasicRegion extends Region {
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType));
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") " + leftInternalType + " " + rightInternalType + " " + hasLeftEdge + " " + hasRightEdge); // TODO Duplication with g.getBoundary(boundaryID)?
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
 	
@@ -107,14 +107,5 @@ public class BasicRegion extends Region {
 	if(!(o instanceof BasicRegion)) return false;
 	BasicRegion br = (BasicRegion) o;
 	return getDescriptor().equals(br.getDescriptor());
-    }
-
-    /*
-     * @pre Coq: Requires definition of myBoundary earlier in script.
-     */
-    public CoqObject toCoq() {
-	return new CoqObject(COQTYPE, 
-			     CONSTRUCTOR + " (" + myBoundary.toCoq() + ") " + leftInternalType + " " + rightInternalType + 
-			     " " + desc.hasLeftEdge + " " + desc.hasRightEdge); //TODO Duplication
     }
 }
