@@ -1,6 +1,6 @@
 import java.io.*;
 
-public abstract class Region {
+public abstract class Region extends CoqObject {
     protected BoundaryGarden myGarden;
     protected Boundary myBoundary;
     
@@ -8,6 +8,7 @@ public abstract class Region {
     public final int size;
 
     Region(BoundaryGarden g, int ID, int s) {
+	super("", ""); // TODO Force values here
 	myGarden = g;
 	boundaryID = ID;
 	size = s;

@@ -39,7 +39,7 @@ public class BasicRegionGenerator {
 	
 	boolean[] truthValues = {true, false};
 	
-	for(InternalType leftInternalType : InternalType.values()) { // TODO internalTypes[] is redundant
+	for(InternalType leftInternalType : InternalType.values()) { 
 	    for(boolean hasLeftEdge : truthValues) {
 		if(!verifyTypeAndEdge(leftInternalType, hasLeftEdge, leftSideHasRoom, canHaveLeftEdge)) continue;
 		
@@ -78,9 +78,6 @@ public class BasicRegionGenerator {
      * @pre Coq: requires definition of myGarden.getBoundary(boundaryID) earlier in proof script
      */
     public CoqObject toCoq() {
-	ArrayList<CoqObject> basicRegionsCoq = new ArrayList<CoqObject>();
-	for (BasicRegion region : basicRegions)
-	    basicRegionsCoq.add(region.toCoq());
-	return CoqObject.coqList(basicRegionsCoq, BasicRegion.COQTYPE); //TODO Duplication with coqListInteger
+	return CoqObject.coqList(basicRegions, BasicRegion.COQTYPE); //TODO Duplication with coqListInteger
     }
 }
