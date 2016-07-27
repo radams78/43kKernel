@@ -39,11 +39,11 @@ public class BasicRegionGenerator {
 	
 	boolean[] truthValues = {true, false};
 	
-	for(int leftInternalType : BasicRegion.internalTypes) {
+	for(InternalType leftInternalType : InternalType.values()) { // TODO internalTypes[] is redundant
 	    for(boolean hasLeftEdge : truthValues) {
 		if(!verifyTypeAndEdge(leftInternalType, hasLeftEdge, leftSideHasRoom, canHaveLeftEdge)) continue;
 		
-		for(int rightInternalType : BasicRegion.internalTypes) {
+		for(InternalType rightInternalType : InternalType.values()) {
 		    for(boolean hasRightEdge : truthValues) {
 			if(!verifyTypeAndEdge(rightInternalType, hasRightEdge, rightSideHasRoom, canHaveRightEdge)) continue;
 			
@@ -58,18 +58,18 @@ public class BasicRegionGenerator {
 	basicRegions = ans;
     }
     
-    private boolean verifyTypeAndEdge(int internalType, boolean hasEdge, boolean sideHasRoom, boolean canHaveEdge) {
+    private boolean verifyTypeAndEdge(InternalType internalType, boolean hasEdge, boolean sideHasRoom, boolean canHaveEdge) {
 	// no room --> type = none AND no leftvedge.
-	if(!sideHasRoom && (internalType != BasicRegion.none || hasEdge)) return false;
+	if(!sideHasRoom && (internalType != InternalType.none || hasEdge)) return false;
 	
 	// if has edge --> can have that edge.
 	if(hasEdge && !canHaveEdge) return false;
 	
 	// if has top vertex --> top path is long
-	if(BasicRegion.hasTopVertex.contains(internalType) && !topPathIsLong) return false;
+	if(internalType.hasTopVertex && !topPathIsLong) return false;
 	
 	// if has bottom vertex --> bottom path is long
-	if(BasicRegion.hasBottomVertex.contains(internalType) && !bottomPathIsLong) return false;
+	if(internalType.hasBottomVertex && !bottomPathIsLong) return false;
 	
 	return true;
     }

@@ -16,7 +16,7 @@ public class BasicRegion extends Region {
     public RegionDescriptor getDescriptor() {return desc;}
     
     private static int computeSize(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType) {
-	return g.getBoundary(boundaryID).size + leftInternalType.getNumVertices() + rightInternalType.getNumVertices(); 
+	return g.getBoundary(boundaryID).size + leftInternalType.numVertices + rightInternalType.numVertices; 
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {

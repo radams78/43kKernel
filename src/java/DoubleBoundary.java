@@ -97,8 +97,8 @@ public class DoubleBoundary {
 	}	
 	
 	// Returs a list of input pairs to the original region pair needed to compute the signature of their sum.
-	// AddX tells which vertex to add to the middle path, where -1 means dont add anything.
-	public List<Pair<InputPair, InputPair> > allInputPairs(InputPair input, int addX) {
+	// AddX tells which vertex to add to the middle path, where null means dont add anything.
+	public List<Pair<InputPair, InputPair> > allInputPairs(InputPair input, Vertex addX) {
 		List<Pair<InputPair, InputPair> > ans = new ArrayList<Pair<InputPair, InputPair> > ();
 		
 		Set<Vertex> outerX = new TreeSet<Vertex> (input.first);
@@ -107,9 +107,9 @@ public class DoubleBoundary {
 		
 		Set<Vertex> doubleX = outerToDouble(outerX);
 		Set<Vertex> doubleD = outerToDouble(outerD);
-		if(addX >= 0) {
-			if(doubleX.contains(addX)) return ans;
-			doubleX.add(new Vertex(addX));
+		if(addX != null) {
+		    if(doubleX.contains(addX)) return ans;
+		    doubleX.add(addX);
 		}
 		doubleD.removeAll(neighbors(doubleX));
 		
@@ -148,7 +148,7 @@ public class DoubleBoundary {
 	
 	// Returns the input pairs needed to access in the top and bottom boundaries in order to compute the signature of X,S where
 	// these are sets on the outer boundary. These are the pairs where no additional vertices are added to X on the middle path.
-	public List<Pair<InputPair, InputPair> > allInputPairsNoX(InputPair input) {return allInputPairs(input, -1);}
+	public List<Pair<InputPair, InputPair> > allInputPairsNoX(InputPair input) {return allInputPairs(input, null);}
 
 	// Returns the input pairs needed to access in the top and bottom boundaries in order to compute the signature of
 	// X,S where these are sets on the outer boundary. These are the pairs where one additional vertex is added to X on the
@@ -185,10 +185,10 @@ public class DoubleBoundary {
 			bottomBoundaryTopPath = new ArrayList<Vertex>();
 			bottomBoundaryBottomPath = new ArrayList<Vertex>();
 
-			while(tt-->0) {topBoundaryTopPath.add(sc.nextInt());}
-			while(tb-->0) {topBoundaryBottomPath.add(sc.nextInt());}
-			while(bt-->0) {bottomBoundaryTopPath.add(sc.nextInt());}
-			while(bb-->0) {bottomBoundaryBottomPath.add(sc.nextInt());}
+			while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
+			while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
+			while(bt-->0) {bottomBoundaryTopPath.add(new Vertex(sc.nextInt()));}
+			while(bb-->0) {bottomBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
 				
 			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
 			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath);
@@ -203,8 +203,8 @@ public class DoubleBoundary {
 			int dl = sc.nextInt();
 			TreeSet<Vertex> X = new TreeSet<Vertex> ();
 			TreeSet<Vertex> D = new TreeSet<Vertex> ();
-			while(xl-->0) {X.add(sc.nextInt());}
-			while(dl-->0) {D.add(sc.nextInt());}
+			while(xl-->0) {X.add(new Vertex(sc.nextInt()));}
+			while(dl-->0) {D.add(new Vertex(sc.nextInt()));}
 			InputPair inp = new InputPair(X,D);
 			
 			System.out.println("Input Pairs, no X");

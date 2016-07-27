@@ -10,14 +10,17 @@ public class BasicRegionTest{
 	writer.println("Require Import Boundary.");
 	writer.println("Require Import Region.");
 	writer.println();
-	Integer[] topPath = {0, 1, 2};
-	Integer[] bottomPath = {0, 2};
-	Boundary testBoundary = new Boundary(new ArrayList<Integer>(Arrays.asList(topPath)), 
-					     new ArrayList<Integer>(Arrays.asList(bottomPath)));
+	Vertex a = new Vertex(0);
+	Vertex b = new Vertex(1);
+	Vertex c = new Vertex(2); // TODO Duplication with BasicRegionGeneratorTest
+	Vertex[] topPath = {a, b, c};
+	Vertex[] bottomPath = {a, c};
+	Boundary testBoundary = new Boundary(new ArrayList<Vertex>(Arrays.asList(topPath)), 
+					     new ArrayList<Vertex>(Arrays.asList(bottomPath)));
 	Boundary[] boundaries = { testBoundary };
 	BoundaryGarden myGarden = new BoundaryGarden(new ArrayList<Boundary>(Arrays.asList(boundaries)),
 						     new ArrayList<String>(Arrays.asList("testBoundary")));
-	BasicRegion testBasicRegion = new BasicRegion(myGarden, 0, 1, 2, true, false);
+	BasicRegion testBasicRegion = new BasicRegion(myGarden, 0, InternalType.isolated, InternalType.top, true, false);
 	writer.println(testBasicRegion.toCoq().definition("testBasicRegion"));
 	writer.close();
     }

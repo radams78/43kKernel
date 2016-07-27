@@ -16,10 +16,10 @@ public class PowerSet<T> extends ArrayList<TreeSet<T> > {
 		TreeSet<T> SS = new TreeSet<T> (S);
 		SS.remove(S.first());
 		
-		PowerSet allSmall = new PowerSet(SS);
+		PowerSet<T> allSmall = new PowerSet<T>(SS);
 		addAll(allSmall);
 
-		PowerSet allBig = new PowerSet(SS);
+		PowerSet<T> allBig = new PowerSet<T>(SS);
 		for(int i = 0; i < allBig.size(); ++i) {allBig.get(i).add(S.first());}
 		addAll(allBig);
 	}
@@ -31,7 +31,7 @@ public class PowerSet<T> extends ArrayList<TreeSet<T> > {
 		X.add(2);
 		X.add(3);
 		X.add(5);
-		PowerSet Z = new PowerSet(X);
+		PowerSet<Integer> Z = new PowerSet<Integer>(X);
 		System.out.println(Z);
 	}
 }

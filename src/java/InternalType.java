@@ -6,15 +6,13 @@ public enum InternalType {
     universal(1, true, true), 
     bothTopAndBottom(2, true, true);
     
-    private final int numVertices;
-    private final boolean hasTopVertex;
-    private final boolean hasBottomVertex;
+    public final int numVertices;
+    public final boolean hasTopVertex;
+    public final boolean hasBottomVertex;
     
     InternalType(int numVertices, boolean hasTopVertex, boolean hasBottomVertex) {
 	this.numVertices = numVertices;
 	this.hasTopVertex = hasTopVertex;
 	this.hasBottomVertex = hasBottomVertex;
     }
-    
-    int getNumVertices() { return numVertices; }
 }

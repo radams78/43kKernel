@@ -1,4 +1,4 @@
-public class Vertex extends CoqObject {
+public class Vertex extends CoqObject implements Comparable<Vertex> {
     private final int index;
 
     public Vertex(int n) {
@@ -8,5 +8,10 @@ public class Vertex extends CoqObject {
 
     public Vertex plus(int n) {
 	return new Vertex(index + n);
+    }
+
+    public int compareTo(Vertex n) {
+	return new Integer(index).compareTo(new Integer(n.index));
+
     }
 }
