@@ -18,7 +18,7 @@ public class BasicRegionGenerator extends CoqObject {
     BasicRegionGenerator(BoundaryGarden myGarden, int boundaryId, Boundary myBoundary,
 			 boolean topPathIsLong, boolean bottomPathIsLong, boolean leftSideHasRoom, boolean rightSideHasRoom,
 			 boolean canHaveLeftEdge, boolean canHaveRightEdge, List<BasicRegion> basicRegions) {
-	super(basicRegions, "BasicRegion"); //TODO Duplication
+	super(basicRegions, BasicRegion.COQTYPE);
 	this.myGarden = myGarden;
 	this.boundaryId = boundaryId;
 	this.myBoundary = myBoundary;
@@ -31,8 +31,7 @@ public class BasicRegionGenerator extends CoqObject {
 	this.basicRegions = basicRegions;
     }
 
-    static BasicRegionGenerator makeBasicRegionGenerator(BoundaryGarden g, int boundaryId) {
-	BoundaryGarden myGarden = g; // TODO Inline
+    static BasicRegionGenerator makeBasicRegionGenerator(BoundaryGarden myGarden, int boundaryId) {
 	Boundary myBoundary = myGarden.getBoundary(boundaryId);
 	
 	boolean topPathIsLong = (myBoundary.topPathLength() == 2);

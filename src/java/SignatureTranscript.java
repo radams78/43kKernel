@@ -85,7 +85,7 @@ public class SignatureTranscript {
 		assert numInputs == allInputs.size() : "Wrong number of inputs";
 			
 		ArrayList<Integer> sig = new ArrayList<Integer> ();
-		for(int i = 0; i < numInputs; ++i) sig.add(0); // TODO Magic number?
+		for(int i = 0; i < numInputs; ++i) sig.add(0);
 			
 		// Read the signature.
 		while(numInputs-->0) {

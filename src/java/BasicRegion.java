@@ -20,7 +20,7 @@ public class BasicRegion extends Region {
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") " + leftInternalType + " " + rightInternalType + " " + hasLeftEdge + " " + hasRightEdge); // TODO Duplication with g.getBoundary(boundaryID)?
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") " + leftInternalType + " " + rightInternalType + " " + hasLeftEdge + " " + hasRightEdge);
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
 	
