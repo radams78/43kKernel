@@ -16,8 +16,8 @@ public class BoundaryListReader {
 		    boundaryName.add(name);
 		    int tpl = sc.nextInt();
 		    int bpl = sc.nextInt();
-		    ArrayList<Vertex> topPath = new ArrayList<Vertex> ();
-		    ArrayList<Vertex> bottomPath = new ArrayList<Vertex> ();
+		    Path topPath = new Path();
+		    Path bottomPath = new Path();
 		    while(tpl-->0) {topPath.add(new Vertex(sc.nextInt()));}
 		    while(bpl-->0) {bottomPath.add(new Vertex(sc.nextInt()));}
 		    boundaries.add(new Boundary(topPath, bottomPath));

@@ -15,8 +15,8 @@ public class Boundary extends CoqObject {
     static final String COQTYPE = "Boundary";
     static final String CONSTRUCTOR = "mkBoundary";
 
-    private ArrayList<Vertex> topPath;
-    private ArrayList<Vertex> bottomPath;
+    private Path topPath;
+    private Path bottomPath;
     /** Number of vertices in both paths, including end-points. */
     public final int size;
     private String name;
@@ -24,23 +24,22 @@ public class Boundary extends CoqObject {
     /**
      * Precondition: topPath and bottomPath have the same first and last elements
      */
-    public Boundary(ArrayList<Vertex> topPath, ArrayList<Vertex> bottomPath) {
-	super("", CONSTRUCTOR + " " + CoqObject.NAT +  "\n  " + CoqObject.coqList(topPath, CoqObject.NAT) + " \n " + 
-	      CoqObject.coqList(bottomPath, CoqObject.NAT));
+    public Boundary(Path topPath, Path bottomPath) {
+	super(COQTYPE, CONSTRUCTOR + " " + CoqObject.NAT +  "\n  " + topPath + " \n " + bottomPath); // TODO Duplication with other CoqObject constructors?
 	assert topPath.get(0).equals(bottomPath.get(0));
-	assert topPath.get(topPath.size() - 1).equals(bottomPath.get(bottomPath.size() - 1)); //TODO first() and last() methods?
-	this.topPath = new ArrayList<Vertex> (topPath);
-	this.bottomPath = new ArrayList<Vertex> (bottomPath);
+	assert topPath.getLast().equals(bottomPath.getLast());
+	this.topPath = topPath;
+	this.bottomPath = bottomPath;
 	this.size = vertexSet().size();
 	this.name = name;
     } 
 	
     /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
     public ArrayList<Vertex> vertexSet() {
-	ArrayList<Vertex> ans = new ArrayList<Vertex> (topPath);
-	for(int i = 0; i < bottomPath.size(); ++i) {
-	    if(ans.contains(bottomPath.get(i))) continue;
-	    ans.add(bottomPath.get(i));
+	ArrayList<Vertex> ans = topPath.asArrayList();
+	for(Vertex v : bottomPath.asArrayList()) {
+	    if(! ans.contains(v))
+		ans.add(v);
 	}
 	return ans;	
     }
@@ -74,8 +73,8 @@ public class Boundary extends CoqObject {
     public Vertex topPathVertex(int p) {return topPath.get(p);}
     public Vertex bottomPathVertex(int p) {return bottomPath.get(p);}
     
-    public ArrayList<Vertex> getTopPath(){return new ArrayList<Vertex> (topPath);}
-    public ArrayList<Vertex> getBottomPath(){return new ArrayList<Vertex> (bottomPath);}
+    public Path getTopPath(){return new Path(topPath);}
+    public Path getBottomPath(){return new Path(bottomPath);}
     
     /** Renumbers the vertices in the order given by {@link #vertexSet} */
     public VertexRenamer canonicalRenamer() {return new VertexRenamer(vertexSet());}
@@ -149,7 +148,7 @@ public class Boundary extends CoqObject {
     
     // TESTING
     public static void main(String[] args) {
-	ArrayList<Vertex> topBoundaryTopPath, topBoundaryBottomPath;
+	Path topBoundaryTopPath, topBoundaryBottomPath;
 	
 	Scanner sc = new Scanner(System.in);
 	
@@ -161,8 +160,8 @@ public class Boundary extends CoqObject {
 	tt = sc.nextInt();
 	tb = sc.nextInt();
 	
-	topBoundaryTopPath = new ArrayList<Vertex>();	
-	topBoundaryBottomPath = new ArrayList<Vertex>();
+	topBoundaryTopPath = new Path();	
+	topBoundaryBottomPath = new Path();
 	
 	while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
 	while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
@@ -179,13 +178,5 @@ public class Boundary extends CoqObject {
 	for(InputPair P : topB.allValidInputs()) {System.out.println(P);}
 	
 	sc.close();
-    }
-
-    public CoqObject toCoq() {
-	String definition = CONSTRUCTOR + " " + CoqObject.NAT +  "\n  ";
-	definition += CoqObject.coqList(topPath, CoqObject.NAT);
-	definition += " \n  ";
-	definition += CoqObject.coqList(bottomPath, CoqObject.NAT); 
-	return new CoqObject(COQTYPE, definition);
     }
 }

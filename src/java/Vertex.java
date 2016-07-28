@@ -1,8 +1,10 @@
 public class Vertex extends CoqObject implements Comparable<Vertex> {
+    public final static String COQTYPE = CoqObject.NAT;
+
     private final int index;
 
     public Vertex(int n) {
-	super(CoqObject.NAT, String.valueOf(n));
+	super(COQTYPE, String.valueOf(n));
 	this.index = n;
     }
 

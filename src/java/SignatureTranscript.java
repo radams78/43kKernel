@@ -65,8 +65,8 @@ public class SignatureTranscript {
 	// Reads a single signature transcript from a scanner.
 	public static SignatureTranscript readFromScanner(Scanner sc, boolean johanStyle) {
 		// Read boundary
-		ArrayList<Vertex> topPath = new ArrayList<Vertex> ();
-		ArrayList<Vertex> bottomPath = new ArrayList<Vertex> ();
+		Path topPath = new Path();
+		Path bottomPath = new Path();
 
 		String name = sc.nextLine();
 			

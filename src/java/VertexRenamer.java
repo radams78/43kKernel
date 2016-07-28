@@ -35,10 +35,10 @@ public class VertexRenamer {
     
     
     public Boundary renamedBoundary(Boundary b) {
-	ArrayList<Vertex> topPath = new ArrayList<Vertex> ();
+	Path topPath = new Path();
 	for(int i = 0; i < b.topPathLength() + 2; ++i) {topPath.add(nameOf(b.topPathVertex(i)));}
 	
-	ArrayList<Vertex> bottomPath = new ArrayList<Vertex> ();
+	Path bottomPath = new Path();
 	for(int i = 0; i < b.bottomPathLength() + 2; ++i) {bottomPath.add(nameOf(b.bottomPathVertex(i)));}
 	
 	return new Boundary(topPath, bottomPath);

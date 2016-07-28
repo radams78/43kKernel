@@ -2,7 +2,7 @@ import java.util.*;
 
 public class DoubleBoundary {
 	
-    ArrayList<Vertex> topPath, middlePath, bottomPath;
+    Path topPath, middlePath, bottomPath;
     Set<Vertex> topPartVertices, bottomPartVertices;
     
     private VertexRenamer bottomBoundaryPrepInverse;
@@ -21,12 +21,12 @@ public class DoubleBoundary {
 		bottomPath = tempBottomBoundary.getBottomPath();
 
 		topPartVertices = new TreeSet<Vertex> ();
-		topPartVertices.addAll(topPath);
-		topPartVertices.addAll(middlePath);
+		topPartVertices.addAll(topPath.asArrayList());
+		topPartVertices.addAll(middlePath.asArrayList());
 	
 		bottomPartVertices = new TreeSet<Vertex> ();
-		bottomPartVertices.addAll(middlePath);
-		bottomPartVertices.addAll(bottomPath);
+		bottomPartVertices.addAll(middlePath.asArrayList());
+		bottomPartVertices.addAll(bottomPath.asArrayList());
 	
 		Boundary outerBoundaryUncanonized = new Boundary(topPath, bottomPath);
 		VertexRenamer outerBoundaryCanonizer = outerBoundaryUncanonized.canonicalRenamer();
@@ -72,15 +72,15 @@ public class DoubleBoundary {
 	
 	// Outputs the internal middle path vertices
 	public Set<Vertex> internalVertices() {
-		Set<Vertex> ans = new TreeSet<Vertex> (middlePath);
-		ans.removeAll(topPath);
-		ans.removeAll(bottomPath);
-		return ans;
+	    Set<Vertex> ans = new TreeSet<Vertex> (middlePath.asArrayList());
+	    ans.removeAll(topPath.asArrayList());
+	    ans.removeAll(bottomPath.asArrayList());
+	    return ans;
 	}
 	
-	public ArrayList<Vertex> getTopPath() {return new ArrayList<Vertex> (topPath);}
-	public ArrayList<Vertex> getMiddlePath() {return new ArrayList<Vertex> (middlePath);}
-	public ArrayList<Vertex> getBottomPath() {return new ArrayList<Vertex> (bottomPath);}
+	public Path getTopPath() {return new Path(topPath);}
+	public Path getMiddlePath() {return new Path (middlePath);}
+	public Path getBottomPath() {return new Path (bottomPath);}
 	
 	public Set<Vertex> outerToDouble (Set<Vertex> S) {return getOuterBoundaryUncanonizer().renamedSet(S);}
 	
@@ -117,12 +117,12 @@ public class DoubleBoundary {
 		Set<Vertex> bottomX = doubleToBottom(doubleX);
 		
 		Set<Vertex> doubleKnownD = new TreeSet<Vertex> (doubleD);
-		doubleKnownD.removeAll(middlePath);
+		doubleKnownD.removeAll(middlePath.asArrayList());
 		
 		// A vertex is unresolved if: (a) it is on the middle path and ((i) it is in D or (ii) it is internal to the double region) 
 		// But neighbors of X are automatically resolved.
 		TreeSet<Vertex> doubleUnresolvedD = new TreeSet<Vertex> (doubleD);
-		doubleUnresolvedD.retainAll(middlePath); 
+		doubleUnresolvedD.retainAll(middlePath.asArrayList()); 
 		doubleUnresolvedD.addAll(internalVertices()); 
 		doubleUnresolvedD.removeAll(neighbors(doubleX)); 
 
@@ -155,7 +155,7 @@ public class DoubleBoundary {
 	// middle path - this incurs a cost of 1 that should be added when computing the signature.
 	public List<Pair<InputPair, InputPair> > allInputPairsWithX(InputPair input) {
 		ArrayList<Pair<InputPair, InputPair> > ans = new ArrayList<Pair<InputPair, InputPair> > ();
-		for(Vertex addX : middlePath) {ans.addAll(allInputPairs(input, addX));}
+		for(Vertex addX : middlePath.asArrayList()) {ans.addAll(allInputPairs(input, addX));}
 		return ans;
 	}
 	
@@ -169,7 +169,7 @@ public class DoubleBoundary {
 	
 	// -------------------- TESTING
 	public static void main(String[] args) {
-			ArrayList<Vertex> topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
+			Path topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
 			
 			Scanner sc = new Scanner(System.in);
 			
@@ -180,10 +180,10 @@ public class DoubleBoundary {
 			bt = sc.nextInt();
 			bb = sc.nextInt();
 			
-			topBoundaryTopPath = new ArrayList<Vertex>();	
-			topBoundaryBottomPath = new ArrayList<Vertex>();
-			bottomBoundaryTopPath = new ArrayList<Vertex>();
-			bottomBoundaryBottomPath = new ArrayList<Vertex>();
+			topBoundaryTopPath = new Path();	
+			topBoundaryBottomPath = new Path();
+			bottomBoundaryTopPath = new Path();
+			bottomBoundaryBottomPath = new Path();
 
 			while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
 			while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
