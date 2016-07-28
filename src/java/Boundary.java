@@ -27,8 +27,8 @@ public class Boundary extends CoqObject {
     public Boundary(ArrayList<Vertex> topPath, ArrayList<Vertex> bottomPath) {
 	super("", CONSTRUCTOR + " " + CoqObject.NAT +  "\n  " + CoqObject.coqList(topPath, CoqObject.NAT) + " \n " + 
 	      CoqObject.coqList(bottomPath, CoqObject.NAT));
-	assert topPath.get(0) == bottomPath.get(0);
-	assert topPath.get(topPath.size() - 1) == bottomPath.get(bottomPath.size() - 1);
+	assert topPath.get(0).equals(bottomPath.get(0));
+	assert topPath.get(topPath.size() - 1).equals(bottomPath.get(bottomPath.size() - 1)); //TODO first() and last() methods?
 	this.topPath = new ArrayList<Vertex> (topPath);
 	this.bottomPath = new ArrayList<Vertex> (bottomPath);
 	this.size = vertexSet().size();

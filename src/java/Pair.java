@@ -17,11 +17,11 @@ public class Pair<F, S> {
 	// copy constructor
 	public Pair(Pair<F,S> P) {this(P.first, P.second);}
 	
-	public String toString() {
+	@Override public String toString() {
 		return "[" + first.toString() + "," + second.toString() + "]";	
 	}	
 
-	public boolean equals(Object o) {
+	@Override public boolean equals(Object o) {
 		if (!(o instanceof Pair)) return false;
 		Pair<?, ?> pair = (Pair<?, ?>) o;
 		return first.equals(pair.first) && second.equals(pair.second);
@@ -34,7 +34,7 @@ public class Pair<F, S> {
 		System.out.println(P2); 		
  	}	
     
-	public int hashCode() {
+	@Override public int hashCode() {
         return (first == null ? 0 : first.hashCode()) ^ (second == null ? 0 : second.hashCode());
     }
 	

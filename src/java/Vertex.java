@@ -12,6 +12,17 @@ public class Vertex extends CoqObject implements Comparable<Vertex> {
 
     public int compareTo(Vertex n) {
 	return new Integer(index).compareTo(new Integer(n.index));
+    }
 
+    @Override public boolean equals(Object n) {
+	if (n instanceof Vertex) {
+	    Vertex nn = (Vertex) n;
+	    return index == nn.index;
+	}
+	return false;
+    }
+
+    @Override public int hashCode() {
+	return index;
     }
 }
