@@ -30,6 +30,4 @@ public class CompositeRegion extends Region {
 	if(!signatureIsComputed) computeSignature();
 	return sig;	
     }
-    
-    public CoqObject toCoq() { return null; } //TODO Force value
 }

@@ -7,14 +7,12 @@ public class BoundaryTest{
     public static final Vertex[] bottomPath = {VertexTest.a, VertexTest.c};
     public static final Boundary testBoundary = new Boundary(new Path(Arrays.asList(topPath)),
 							     new Path(Arrays.asList(bottomPath)));
+    public static final String[] IMPORTS = { "List", "Boundary" };
+    public static final String FILENAME = "BoundaryTest.v";
+    public static final String NAME = "testBoundary";
 
     public static void main(String[] args) throws FileNotFoundException {
-	PrintWriter writer = new PrintWriter(args[0] + "/BoundaryTest.v");
-	writer.println("Require Import List.");
-	writer.println("Require Import Boundary."); // TODO Duplication
-	writer.println();
-	writer.println(testBoundary.definition("testBoundary"));
-	writer.close();
+	CoqObjectTest.testObject(args[0], FILENAME, IMPORTS, testBoundary, NAME);
     }
 
 }

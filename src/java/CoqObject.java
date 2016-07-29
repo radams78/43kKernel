@@ -36,24 +36,10 @@ public class CoqObject {
 	this.type = LIST + " " + type;
     }
 
-    public static <T extends CoqObject> CoqObject coqList(List<T> list, String type) {
-	String value = "";
-	for (T x : list) {
-	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
-	    value += x.getValue() + CONS;
-	}
-	value += NIL;
-	return new CoqObject(LIST + " " + type, value);
-    }
-
-    public static CoqObject coqInteger(Integer n) {
-	assert n >= 0;
-	return new CoqObject(NAT, n.toString());
-    }
-
-    public static CoqObject coqListInteger(List<Integer> l) {
-	ArrayList<CoqObject> integers = new ArrayList<CoqObject>();
-	for (Integer n : l) integers.add(coqInteger(n));
-	return coqList(integers, NAT);
+    public static String construct(String constructor, List<CoqObject> arguments) {
+	String result = constructor;
+	for (CoqObject arg : arguments)
+	    result += " " + arg;
+	return result;
     }
 }

@@ -8,7 +8,7 @@ public abstract class Region extends CoqObject {
     public final int size;
 
     Region(BoundaryGarden g, int ID, int s, String type, String value) {
-	super(type, value); // TODO Force values here
+	super(type, value);
 	myGarden = g;
 	boundaryID = ID;
 	size = s;
