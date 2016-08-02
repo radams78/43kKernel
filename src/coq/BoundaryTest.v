@@ -1,8 +1,7 @@
-Require Import List.
+Require Import Vector.
 Require Import Boundary.
 
-Definition testBoundary : Boundary :=
- mkBoundary nat
-  (0 :: 1 :: 2 :: nil) 
- (0 :: 2 :: nil).
+Definition testBoundary : Boundary nat zero zero :=
+ mkBoundary zero zero (0) (2) ((nil nat)) 
+ ((nil nat)).
 

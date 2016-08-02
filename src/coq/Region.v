@@ -1,14 +1,6 @@
 Require Import Boundary.
 
-Inductive Connection : Set :=
-  left : Connection |
-  right : Connection |
-  both : Connection.
-
-Record Region : Type := mkRegion
-  {boundary : Boundary;
-   Internal : Set;
-   connect  : Internal -> Connection;
-   edge     : (Internal + Points boundary) ->
-              (Internal + Points boundary) ->
-              Prop}.
+Record Region (l m : PathLength) : Type := mkRegion
+  {Vertex : Set;
+   boundary : Boundary Vertex l m;
+   Edge : Vertex -> Vertex -> Prop}. (* Edges apart from those on the two paths of the boundary *)

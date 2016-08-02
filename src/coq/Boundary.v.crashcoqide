@@ -1,0 +1,22 @@
+(* A boundary consists of a set of points,
+and two paths out of that set. *)
+
+Set Implicit Arguments.
+
+Require Import Vector.
+
+Inductive path_length : Set :=
+  zero : path_length |
+  one : path_length |
+  two : path_length.
+
+Definition path_length2nat (l : path_length) : nat := match l with
+  zero => 0 |
+  one => 1 |
+  two => 2 end.
+
+Record Boundary (Points : Set) (l m : path_length) : Set := mkBoundary
+{left : Points;
+ right : Points;
+ topPath : t Points (path_length2nat l);
+ bottomPath : t Points (path_length2nat m)}.

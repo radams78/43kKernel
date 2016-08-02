@@ -7,7 +7,7 @@ public class BoundaryTest{
     public static final Vertex[] bottomPath = {VertexTest.a, VertexTest.c};
     public static final Boundary testBoundary = new Boundary(new Path(Arrays.asList(topPath)),
 							     new Path(Arrays.asList(bottomPath)));
-    public static final String[] IMPORTS = { "List", "Boundary" };
+    public static final String[] IMPORTS = { "Vector", "Boundary" };
     public static final String FILENAME = "BoundaryTest.v";
     public static final String NAME = "testBoundary";
 

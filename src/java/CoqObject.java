@@ -36,6 +36,16 @@ public class CoqObject {
 	this.type = LIST + " " + type;
     }
 
+    public static <T extends CoqObject> CoqObject vector(List<T> list, String type) {
+	String value = "";
+	for (T x : list) {
+	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
+	    value += x.getValue() + CONS;
+	}
+	value += "(" + NIL + " " + type + ")";
+	return new CoqObject("t " + type, value);
+    }
+
     public static String construct(String constructor, List<CoqObject> arguments) {
 	String result = constructor;
 	for (CoqObject arg : arguments)

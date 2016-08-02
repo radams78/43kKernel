@@ -4,7 +4,6 @@ Require Import Boundary.
 Require Import Region.
 
 Definition testBasicRegion : BasicRegion :=
- mkBasicRegion (mkBoundary nat
-  (nil) 
- (nil)) isolated top true false.
+ mkBasicRegion (mkBoundary zero zero (0) (2) ((nil nat)) 
+ ((nil nat))) isolated top true false.
 

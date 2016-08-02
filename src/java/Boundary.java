@@ -25,7 +25,8 @@ public class Boundary extends CoqObject {
      * Precondition: topPath and bottomPath have the same first and last elements
      */
     public Boundary(Path topPath, Path bottomPath) {
-	super(COQTYPE, CONSTRUCTOR + " " + CoqObject.NAT +  "\n  " + topPath + " \n " + bottomPath); // TODO Duplication with other CoqObject constructors?
+	super(COQTYPE + " " + CoqObject.NAT + " " + topPath.getLength() + " " + bottomPath.getLength(), 
+	      CONSTRUCTOR + " " + topPath.getLength() + " " + bottomPath.getLength() + " " + topPath.get(0) + " " + topPath.getLast() + " " + topPath.getMiddle() + " \n " + bottomPath.getMiddle()); // TODO Duplication with other CoqObject constructors?
 	assert topPath.get(0).equals(bottomPath.get(0));
 	assert topPath.getLast().equals(bottomPath.getLast());
 	this.topPath = topPath;
@@ -33,6 +34,9 @@ public class Boundary extends CoqObject {
 	this.size = vertexSet().size();
 	this.name = name;
     } 
+
+    public Vertex getLeft() { return topPath.get(0); }
+    public Vertex getRight() { return topPath.getLast(); }
 	
     /** Set of vertices in both paths, including end-points, in order: top path from left to right, then (bottom path - top path) from left to right. */
     public ArrayList<Vertex> vertexSet() {
@@ -144,7 +148,6 @@ public class Boundary extends CoqObject {
      * (X,S) --> (X, D) where D = VertexSet \ (N[X] u D) 
      * so ironically converting to and from is the same. */
     public InputPair fromJohanStyle(InputPair inp) {return toJohanStyle(inp);}
-    
     
     // TESTING
     public static void main(String[] args) {
