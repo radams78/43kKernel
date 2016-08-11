@@ -26,9 +26,9 @@ public class CoqObject {
 	return(DEFINITION + name + COLON + type + DEFEQ + value + PERIOD);
     }
 
+    //TODO Magic strings
     <T extends CoqObject> CoqObject(Iterable<T> list, String type) {
 	String prefix = "", suffix = "";
-
 	for (T x : list) {
 	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
 	    prefix = "List.cons (" + x.getValue() + ") (" + prefix;

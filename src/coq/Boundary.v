@@ -1,5 +1,4 @@
-(* A boundary consists of a set of points,
-and two paths out of that set. *)
+(* A boundary consists of a set of points, and two paths out of that set. *)
 
 Set Implicit Arguments.
 
@@ -24,17 +23,15 @@ Record Boundary (Vertex : Set) (l m : PathLength) : Set := mkBoundary
   topPath : Vector.t Vertex l;
   bottomPath : Vector.t Vertex m}.
 
-Inductive Edge (Vertex : Set) : forall l m, Boundary Vertex l m -> Vertex -> Vertex -> Prop :=
-  top0 : forall m (B : Boundary Vertex zero m), Edge B (left B) (right B) |
-  top10 : forall m (B : Boundary Vertex one m), Edge B (left B) (nth (topPath B) F1) |
-  top11 : forall m (B : Boundary Vertex one m), Edge B (nth (topPath B) F1) (right B) |
-  top20 : forall m (B : Boundary Vertex two m), Edge B (left B) (nth (topPath B) F1) |
-  top21 : forall m (B : Boundary Vertex two m), Edge B (nth (topPath B) F1) (nth (topPath B) (FS F1)) |
-  top22 : forall m (B : Boundary Vertex two m), Edge B (nth (topPath B) (FS F1)) (right B) |
-  bottom0 : forall l (B : Boundary Vertex l zero), Edge B (left B) (right B) |
-  bottom10 : forall l (B : Boundary Vertex l one), Edge B (left B) (nth (bottomPath B) F1) |
-  bottom11 : forall l (B : Boundary Vertex l one), Edge B (nth (bottomPath B) F1) (right B) |
-  bottom20 : forall l (B : Boundary Vertex l two), Edge B (left B) (nth (bottomPath B) F1) |
-  bottom21 : forall l (B : Boundary Vertex l two), Edge B (nth (bottomPath B) F1) (nth (bottomPath B) (FS F1)) |
-  bottom22 : forall l (B : Boundary Vertex l two), Edge B (nth (bottomPath B) (FS F1)) (right B).
+Inductive _Edge (Vertex : Set) (left right : Vertex) : forall n, Vector.t Vertex n -> Vertex -> Vertex -> Prop :=
+  edge0 : forall (P : Vector.t Vertex 0), _Edge left right P left right |
+  edge10 : forall (P : Vector.t Vertex 1), _Edge left right P left (nth P F1) |
+  edge11 : forall (P : Vector.t Vertex 1), _Edge left right P (nth P F1) right |
+  edge20 : forall (P : Vector.t Vertex 2), _Edge left right P left (nth P F1) |
+  edge21 : forall (P : Vector.t Vertex 2), _Edge left right P (nth P F1) (nth P (FS F1)) |
+  edge22 : forall (P : Vector.t Vertex 2), _Edge left right P (nth P (FS F1)) right.
+
+Inductive Edge (Vertex : Set) (l m : PathLength) (B : Boundary Vertex l m) : Vertex -> Vertex -> Prop :=
+  top : forall x y, _Edge (left B) (right B) (topPath B) x y -> Edge B x y |
+  bottom : forall x y, _Edge (left B) (right B) (bottomPath B) x y -> Edge B x y.
 (* TODO Refactor *)
