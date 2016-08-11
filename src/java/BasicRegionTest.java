@@ -7,7 +7,14 @@ public class BasicRegionTest{
     static final BasicRegion testBasicRegion = new BasicRegion(BoundaryGardenTest.testGarden, 0, InternalType.isolated, InternalType.top, true, false);
     static final String NAME = "testBasicRegion";
 
+    //TODO Duplication
     public static void main(String[] args) throws FileNotFoundException {
-	CoqObjectTest.testObject(args[0], OUTPUT_FILE, IMPORTS, testBasicRegion, NAME);
+	PrintWriter writer = new PrintWriter(args[0] + "/" + OUTPUT_FILE);
+	for (String imp : IMPORTS)
+	    writer.println(CoqObjectTest.REQUIRE_IMPORT + " " + imp + ".");
+	writer.println("Import VectorNotations.");
+	writer.println();
+	writer.println(testBasicRegion.definition(NAME));
+	writer.close();
     }
 }

@@ -20,19 +20,21 @@ public class CoqObject {
 
     public String getType() { return type; }
     public String getValue() { return value; }
-    public String toString() { return "(" + value + ")"; }
+    @Override public String toString() { return "(" + value + ")"; }
 
     public String definition(String name) {
 	return(DEFINITION + name + COLON + type + DEFEQ + value + PERIOD);
     }
 
     <T extends CoqObject> CoqObject(Iterable<T> list, String type) {
-	this.value = "";
+	String prefix = "", suffix = "";
+
 	for (T x : list) {
 	    assert x.getType().equals(type) : ("Object should have type " + type + " but has type " + x.getType());
-	    this.value += x.getValue() + CONS;
+	    prefix = "List.cons (" + x.getValue() + ") (" + prefix;
+	    suffix += ")";
 	}
-	this.value += NIL;
+	this.value = prefix + "List.nil" + suffix;
 	this.type = LIST + " " + type;
     }
 

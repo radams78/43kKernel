@@ -15,4 +15,17 @@ public enum InternalType {
 	this.hasTopVertex = hasTopVertex;
 	this.hasBottomVertex = hasBottomVertex;
     }
+
+    //TODO Duplication
+    public CoqObject toCoq(Path.PathLength topPathLength, Path.PathLength bottomPathLength) {
+	switch(this) {
+	case none: return new CoqObject("InternalType", "none " + topPathLength + " " + bottomPathLength);
+	case isolated: return new CoqObject("InternalType", "isolated " + topPathLength + " " + bottomPathLength);
+	case top: return new CoqObject("InternalType", "top " + bottomPathLength);
+	case bottom: return new CoqObject("InternalType", "bottom " + topPathLength);
+	case universal: return new CoqObject("InternalType", "universal");
+	case bothTopAndBottom: return new CoqObject("InternalType", "bothTopAndBottom");
+	default: throw new AssertionError("InternalType not recognised");
+	}
+    }
 }

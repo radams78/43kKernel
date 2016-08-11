@@ -20,9 +20,9 @@ public class BasicRegion extends Region {
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") (" 
-	      + leftInternalType + " " + g.getBoundary(boundaryID).topPathLength() + " " + g.getBoundary(boundaryID).bottomPathLength() + ") (" 
-	      + rightInternalType + " " + g.getBoundary(boundaryID).topPathLength() + " " + g.getBoundary(boundaryID).bottomPathLength() + ") "
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") " 
+	      + leftInternalType.toCoq(g.getBoundary(boundaryID).topPathLength(), g.getBoundary(boundaryID).bottomPathLength()) + " "
+	      + rightInternalType.toCoq(g.getBoundary(boundaryID).topPathLength(), g.getBoundary(boundaryID).bottomPathLength()) + " "
 	      + hasLeftEdge + " " + hasRightEdge);
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
@@ -87,7 +87,7 @@ public class BasicRegion extends Region {
 	case bottom: return X.contains(myBoundary.bottomPathVertex(1));
 	case universal: return X.contains(myBoundary.topPathVertex(1)) || X.contains(myBoundary.bottomPathVertex(1));
 	case bothTopAndBottom: return X.contains(myBoundary.topPathVertex(1)) && X.contains(myBoundary.bottomPathVertex(1));
-	default: return false;
+	default: throw new AssertionError("leftInternalType not recognised");
 	}
 	
     }
@@ -102,7 +102,7 @@ public class BasicRegion extends Region {
 	case bottom: return X.contains(myBoundary.bottomPathVertex(2));
 	case universal: return X.contains(myBoundary.topPathVertex(2)) || X.contains(myBoundary.bottomPathVertex(2));
 	case bothTopAndBottom: return X.contains(myBoundary.topPathVertex(2)) && X.contains(myBoundary.bottomPathVertex(2));
-	default: return false;
+	default: throw new AssertionError("rightInternalType not recognised");
 	}
     }
     
@@ -110,5 +110,31 @@ public class BasicRegion extends Region {
 	if(!(o instanceof BasicRegion)) return false;
 	BasicRegion br = (BasicRegion) o;
 	return getDescriptor().equals(br.getDescriptor());
+    }
+
+    // TODO Duplication
+    public CoqObject leftInternalTypeCoq() {
+	switch(leftInternalType) {
+	case none: return new CoqObject("InternalType", "none " + myBoundary.topPathLength() + " " + myBoundary.bottomPathLength());
+	case isolated: return new CoqObject("InternalType", "isolated " + myBoundary.topPathLength() + " " + myBoundary.bottomPathLength());
+	case top: return new CoqObject("InternalType", "top " + myBoundary.bottomPathLength());
+	case bottom: return new CoqObject("InternalType", "bottom " + myBoundary.topPathLength());
+	case universal: return new CoqObject("InternalType", "universal");
+	case bothTopAndBottom: return new CoqObject("InternalType", "bothTopAndBottom");
+	default: throw new AssertionError("leftInternalType not recognised");
+	}
+    }
+
+    // TODO Duplication
+    public CoqObject rightInternalTypeCoq() {
+	switch(rightInternalType) {
+	case none: return new CoqObject("InternalType", "none " + myBoundary.topPathLength() + " " + myBoundary.bottomPathLength());
+	case isolated: return new CoqObject("InternalType", "isolated " + myBoundary.topPathLength() + " " + myBoundary.bottomPathLength());
+	case top: return new CoqObject("InternalType", "top " + myBoundary.bottomPathLength());
+	case bottom: return new CoqObject("InternalType", "bottom " + myBoundary.topPathLength());
+	case universal: return new CoqObject("InternalType", "universal");
+	case bothTopAndBottom: return new CoqObject("InternalType", "bothTopAndBottom");
+	default: throw new AssertionError("rightInternalType not recognised");
+	}
     }
 }
