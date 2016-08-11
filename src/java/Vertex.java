@@ -4,7 +4,7 @@ public class Vertex extends CoqObject implements Comparable<Vertex> {
     private final int index;
 
     public Vertex(int n) {
-	super(COQTYPE, String.valueOf(n));
+	super(COQTYPE, Integer.toString(n));
 	this.index = n;
     }
 
@@ -14,6 +14,10 @@ public class Vertex extends CoqObject implements Comparable<Vertex> {
 
     public int compareTo(Vertex n) {
 	return new Integer(index).compareTo(new Integer(n.index));
+    }
+
+    @Override public String toString() {
+	return Integer.toString(index);
     }
 
     @Override public boolean equals(Object n) {

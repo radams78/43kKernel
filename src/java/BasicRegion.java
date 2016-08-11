@@ -20,7 +20,10 @@ public class BasicRegion extends Region {
     }
     
     BasicRegion(BoundaryGarden g, int boundaryID, InternalType leftInternalType, InternalType rightInternalType, boolean hasLeftEdge, boolean hasRightEdge) {
-	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") " + leftInternalType + " " + rightInternalType + " " + hasLeftEdge + " " + hasRightEdge);
+	super(g, boundaryID, computeSize(g, boundaryID, leftInternalType, rightInternalType), COQTYPE, CONSTRUCTOR + " (" + g.getBoundary(boundaryID).getValue() + ") (" 
+	      + leftInternalType + " " + g.getBoundary(boundaryID).topPathLength() + " " + g.getBoundary(boundaryID).bottomPathLength() + ") (" 
+	      + rightInternalType + " " + g.getBoundary(boundaryID).topPathLength() + " " + g.getBoundary(boundaryID).bottomPathLength() + ") "
+	      + hasLeftEdge + " " + hasRightEdge);
 	this.leftInternalType = leftInternalType;
 	this.rightInternalType = rightInternalType;
 	
@@ -90,7 +93,7 @@ public class BasicRegion extends Region {
     }
     
     private boolean dominatesRightInternal(Set<Vertex> X) {
-	if(X.contains(myBoundary.topPathVertex(myBoundary.topPathLength() + 1))) return true;
+	if(X.contains(myBoundary.topPathVertex(myBoundary.topPathLength().toInt + 1))) return true;
 	
 	switch(rightInternalType) {
 	case none: return true;

@@ -12,7 +12,7 @@ public class CompositeRegion extends Region {
     
     CompositeRegion(BoundaryGarden g, Region topRegion, BasicRegion bottomRegion) {
 	super(g, g.getGluingResult(topRegion.boundaryID, bottomRegion.boundaryID), 
-	      topRegion.size + bottomRegion.size - (g.getBoundary(topRegion.boundaryID).bottomPathLength() + 2), "", ""); // TODO Force value here
+	      topRegion.size + bottomRegion.size - (g.getBoundary(topRegion.boundaryID).bottomPathLength().toInt + 2), "", ""); // TODO Force value here
 	
 	desc = new CompositeRegionDescriptor(topRegion.getDescriptor(), (BasicRegionDescriptor) bottomRegion.getDescriptor());
 	signatureIsComputed = false;

@@ -3,7 +3,7 @@ import java.util.*;
 
 public class BasicRegionTest{
     static final String OUTPUT_FILE = "BasicRegionTest.v";
-    static final String[] IMPORTS = {"List", "BasicRegion", "Boundary", "Region"}; 
+    static final String[] IMPORTS = {"BasicRegion", "Boundary", "Region", "Vector"}; 
     static final BasicRegion testBasicRegion = new BasicRegion(BoundaryGardenTest.testGarden, 0, InternalType.isolated, InternalType.top, true, false);
     static final String NAME = "testBasicRegion";
 

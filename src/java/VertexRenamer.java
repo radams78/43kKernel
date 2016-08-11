@@ -35,13 +35,13 @@ public class VertexRenamer {
     
     
     public Boundary renamedBoundary(Boundary b) {
-	Path topPath = new Path();
-	for(int i = 0; i < b.topPathLength() + 2; ++i) {topPath.add(nameOf(b.topPathVertex(i)));}
+	Vertex[] topPath = new Vertex[b.topPathLength().toInt + 2];
+	for(int i = 0; i < b.topPathLength().toInt + 2; ++i) topPath[i] = nameOf(b.topPathVertex(i)); // TODO Magic constant
 	
-	Path bottomPath = new Path();
-	for(int i = 0; i < b.bottomPathLength() + 2; ++i) {bottomPath.add(nameOf(b.bottomPathVertex(i)));}
+	Vertex[] bottomPath = new Vertex[b.bottomPathLength().toInt + 2];
+	for(int i = 0; i < b.bottomPathLength().toInt + 2; ++i) bottomPath[i] = nameOf(b.bottomPathVertex(i)); // TODO Duplication
 	
-	return new Boundary(topPath, bottomPath);
+	return new Boundary(new Path(Arrays.asList(topPath)), new Path(Arrays.asList(bottomPath))); // TODO Duplication
     }
     
     public TreeSet<Vertex> renamedSet(Set<Vertex> S) {

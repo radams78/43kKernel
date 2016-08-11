@@ -3,6 +3,6 @@ Require Import Boundary.
 Import VectorNotations.
 
 Definition testBoundary : Boundary nat two zero :=
- mkBoundary two zero 0 3 (1 :: 2 :: (nil nat)) 
+ mkBoundary two zero (0) (3) (1 :: 2 :: (nil nat)) 
  ((nil nat)).
 

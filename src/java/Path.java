@@ -12,21 +12,23 @@ public class Path extends CoqObject {
     }
 
     private ArrayList<Vertex> vertices;
+    private final PathLength pathLength;
 
-    public Path() {
-	super(new ArrayList<Vertex>(), Vertex.COQTYPE);
-	this.vertices = new ArrayList<Vertex>();
-    }
-
-    public Path(List<Vertex> vertices) {
+    public Path(Collection<Vertex> vertices) {
 	super(vertices, Vertex.COQTYPE);
-	this.vertices = new ArrayList<Vertex>();
-	this.vertices.addAll(vertices);
+	this.vertices = new ArrayList<Vertex>(vertices);
+	switch(vertices.size()) {
+	case 2: this.pathLength = PathLength.zero; break;
+	case 3: this.pathLength = PathLength.one; break;
+	case 4: this.pathLength = PathLength.two; break;
+	default: throw new IllegalArgumentException("Attempt to create path of length " + vertices.size() + ": " + vertices);
+	}
     }
 
     public Path(Path path) {
 	super(path.vertices, Vertex.COQTYPE);
 	this.vertices = new ArrayList<Vertex>(path.vertices);
+	this.pathLength = path.pathLength;
     }
 
     public Vertex get(int i) {
@@ -45,12 +47,8 @@ public class Path extends CoqObject {
 	return vertices.size();
     }
 
-    public void add(Vertex v) {
-	vertices.add(v);
-    }
-
     public PathLength getLength() {
-	return PathLength.zero;
+	return pathLength;
     }
 
     /* Return the points in a path except for the endpoints */

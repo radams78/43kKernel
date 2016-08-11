@@ -48,9 +48,24 @@ Definition boundary (R : BasicRegion) : Boundary (Vertex R) (top_length R) (bott
 
 Inductive _Edge (BV : Set): forall l m (s t : InternalType l m) (B : Boundary BV l m), _Vertex BV s t -> _Vertex BV s t -> Prop :=
   be : forall l m (s t : InternalType l m) B x y, Boundary.Edge B x y -> _Edge B (bv s t x) (bv s t y) |
-  left : forall l m (s t : InternalType l m) B x, _Edge B (bv s t (left B)) (liv BV t x). 
-  
+  left : forall l m (s t : InternalType l m) B x, _Edge B (bv s t (left B)) (liv BV t x) |
+  right : forall l m (s t : InternalType l m) B y, _Edge B (bv s t (right B)) (riv BV s y) |
+  ltopV : forall m t B, _Edge B (liv BV t (topV m)) (bv _ t (nth (topPath B) F1)) |
+  lbotV : forall l t B, _Edge B (liv BV t (botV l)) (bv _ t (nth (bottomPath B) F1)) |
+  lunivtop : forall t B, _Edge B (liv BV t univ) (bv _ t (nth (topPath B) F1)) |
+  lunivbot : forall t B, _Edge B (liv BV t univ) (bv _ t (nth (bottomPath B) F1)) |
+  ltop' : forall t B, _Edge B (liv BV t top') (bv _ t (nth (topPath B) F1)) |
+  lbot' : forall t B, _Edge B (liv BV t bot') (bv _ t (nth (bottomPath B) F1)) |
+  rtopV : forall m s B, _Edge B (riv BV s (topV m)) (bv s _ (nth (topPath B) (FS F1))) |
+  rbotV : forall l s B, _Edge B (riv BV s (botV l)) (bv s _ (nth (bottomPath B) (FS F1))) |
+  runivtop : forall s B, _Edge B (riv BV s univ) (bv s _ (nth (topPath B) (FS F1))) |
+  runivbot : forall s B, _Edge B (riv BV s univ) (bv s _ (nth (bottomPath B) (FS F1))) |
+  rtop' : forall s B, _Edge B (riv BV s top') (bv s _ (nth (topPath B) (FS F1))) |
+  rbot' : forall s B, _Edge B (riv BV s bot') (bv s _ (nth (bottomPath B) (FS F1))).
+
+Definition Edge (R : BasicRegion) : Vertex R -> Vertex R -> Prop :=
+  @_Edge (Boundary_Vertex R) (top_length R) (bottom_length R) (left_internal_type R) (right_internal_type R) (_boundary R).
 
 Definition BasicRegion2Region (R : BasicRegion) : Region (top_length R) (bottom_length R) := 
   mkRegion (top_length R) (bottom_length R) (Vertex R)
-  (boundary R).
+  (boundary R) (@Edge R).

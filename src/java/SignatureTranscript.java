@@ -65,8 +65,8 @@ public class SignatureTranscript {
 	// Reads a single signature transcript from a scanner.
 	public static SignatureTranscript readFromScanner(Scanner sc, boolean johanStyle) {
 		// Read boundary
-		Path topPath = new Path();
-		Path bottomPath = new Path();
+		ArrayList<Vertex> topPath = new ArrayList<Vertex>();
+		ArrayList<Vertex> bottomPath = new ArrayList<Vertex>();
 
 		String name = sc.nextLine();
 			
@@ -75,7 +75,7 @@ public class SignatureTranscript {
 		int bps = sc.nextInt();
 		while(bps-->0) bottomPath.add(new Vertex(sc.nextInt()));
 			
-		Boundary inBoundary = new Boundary(topPath, bottomPath);
+		Boundary inBoundary = new Boundary(new Path(topPath), new Path(bottomPath)); // TODO Duplication with Boundary.java line 172
 		Boundary boundary = inBoundary.canonicalBoundary();
 		VertexRenamer canonizer = inBoundary.canonicalRenamer();
 			
@@ -135,12 +135,12 @@ public class SignatureTranscript {
 			System.exit(1);
 		}
 
-		writer.print(myBoundary.topPathLength() + 2 + " ");
-		for(int i = 0; i < myBoundary.topPathLength() + 2; ++i) writer.print(myBoundary.topPathVertex(i) + " ");
+		writer.print(myBoundary.topPathLength().toInt + 2 + " ");
+		for(int i = 0; i < myBoundary.topPathLength().toInt + 2; ++i) writer.print(myBoundary.topPathVertex(i) + " ");
 		writer.println();
 		
-		writer.print(myBoundary.bottomPathLength() + 2 + " ");
-		for(int i = 0; i < myBoundary.bottomPathLength() + 2; ++i) writer.print(myBoundary.bottomPathVertex(i) + " ");
+		writer.print(myBoundary.bottomPathLength().toInt + 2 + " ");
+		for(int i = 0; i < myBoundary.bottomPathLength().toInt + 2; ++i) writer.print(myBoundary.bottomPathVertex(i) + " ");
 		writer.println();
 		
 		writer.println(inputs.size());

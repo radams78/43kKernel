@@ -5,6 +5,7 @@ public class VertexTest {
     public static final Vertex a = new Vertex(0);
     public static final Vertex b = new Vertex(1);
     public static final Vertex c = new Vertex(2);
+    public static final Vertex d = new Vertex(3);
 
     /* Test we have implemented equals correctly */
     public static void main(String[] args) {

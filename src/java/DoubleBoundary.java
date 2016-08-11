@@ -42,8 +42,8 @@ public class DoubleBoundary {
 		Boundary tempBottomBoundary = add100.renamedBoundary(bottomBoundary);
 		
 		TreeMap<Vertex, Vertex> newNameList = new TreeMap<Vertex, Vertex> ();
-		for(int i = 0; i < tempBottomBoundary.topPathLength() + 2; ++i) newNameList.put(tempBottomBoundary.topPathVertex(i), topBoundary.bottomPathVertex(i));
-		for(int i = 0; i < tempBottomBoundary.bottomPathLength() + 2; ++i)  {
+		for(int i = 0; i < tempBottomBoundary.topPathLength().toInt + 2; ++i) newNameList.put(tempBottomBoundary.topPathVertex(i), topBoundary.bottomPathVertex(i));
+		for(int i = 0; i < tempBottomBoundary.bottomPathLength().toInt + 2; ++i)  {
 			if(newNameList.containsKey(tempBottomBoundary.bottomPathVertex(i))) {
 				newNameList.put(tempBottomBoundary.bottomPathVertex(i), newNameList.get(tempBottomBoundary.bottomPathVertex(i))); 
 			} else {
@@ -169,7 +169,7 @@ public class DoubleBoundary {
 	
 	// -------------------- TESTING
 	public static void main(String[] args) {
-			Path topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
+			ArrayList<Vertex> topBoundaryTopPath, topBoundaryBottomPath, bottomBoundaryTopPath, bottomBoundaryBottomPath;
 			
 			Scanner sc = new Scanner(System.in);
 			
@@ -180,18 +180,18 @@ public class DoubleBoundary {
 			bt = sc.nextInt();
 			bb = sc.nextInt();
 			
-			topBoundaryTopPath = new Path();	
-			topBoundaryBottomPath = new Path();
-			bottomBoundaryTopPath = new Path();
-			bottomBoundaryBottomPath = new Path();
+			topBoundaryTopPath = new ArrayList<Vertex>();	
+			topBoundaryBottomPath = new ArrayList<Vertex>();
+			bottomBoundaryTopPath = new ArrayList<Vertex>();
+			bottomBoundaryBottomPath = new ArrayList<Vertex>();
 
 			while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
 			while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
 			while(bt-->0) {bottomBoundaryTopPath.add(new Vertex(sc.nextInt()));}
 			while(bb-->0) {bottomBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
 				
-			Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
-			Boundary bottomB = new Boundary(bottomBoundaryTopPath, bottomBoundaryBottomPath);
+			Boundary topB = new Boundary(new Path(topBoundaryTopPath), new Path(topBoundaryBottomPath));
+			Boundary bottomB = new Boundary(new Path(bottomBoundaryTopPath), new Path(bottomBoundaryBottomPath));
 
 			DoubleBoundary DB = new DoubleBoundary(topB, bottomB);
 			

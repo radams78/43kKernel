@@ -34,10 +34,10 @@ public class BasicRegionGenerator extends CoqObject {
     static BasicRegionGenerator makeBasicRegionGenerator(BoundaryGarden myGarden, int boundaryId) {
 	Boundary myBoundary = myGarden.getBoundary(boundaryId);
 	
-	boolean topPathIsLong = (myBoundary.topPathLength() == 2);
-	boolean bottomPathIsLong = (myBoundary.bottomPathLength() == 2);
+	boolean topPathIsLong = (myBoundary.topPathLength() == Path.PathLength.two);
+	boolean bottomPathIsLong = (myBoundary.bottomPathLength() == Path.PathLength.two);
 	boolean leftSideHasRoom =  ! myBoundary.topPathVertex(1).equals(myBoundary.bottomPathVertex(1));
-	boolean rightSideHasRoom = ! myBoundary.topPathVertex(myBoundary.topPathLength()).equals(myBoundary.bottomPathVertex(myBoundary.bottomPathLength())); 
+	boolean rightSideHasRoom = ! myBoundary.topPathVertex(myBoundary.topPathLength().toInt).equals(myBoundary.bottomPathVertex(myBoundary.bottomPathLength().toInt)); 
 	
 	boolean canHaveLeftEdge = 		topPathIsLong && bottomPathIsLong 
 	    && !myBoundary.areNeighbors(myBoundary.topPathVertex(1), myBoundary.bottomPathVertex(1));

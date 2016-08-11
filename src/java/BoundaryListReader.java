@@ -16,11 +16,11 @@ public class BoundaryListReader {
 		    boundaryName.add(name);
 		    int tpl = sc.nextInt();
 		    int bpl = sc.nextInt();
-		    Path topPath = new Path();
-		    Path bottomPath = new Path();
+		    ArrayList<Vertex> topPath = new ArrayList<Vertex>();
+		    ArrayList<Vertex> bottomPath = new ArrayList<Vertex>();
 		    while(tpl-->0) {topPath.add(new Vertex(sc.nextInt()));}
 		    while(bpl-->0) {bottomPath.add(new Vertex(sc.nextInt()));}
-		    boundaries.add(new Boundary(topPath, bottomPath));
+		    boundaries.add(new Boundary(new Path(topPath), new Path(bottomPath)));
 		}
 		
 		return new Pair<ArrayList<Boundary>, ArrayList<String> > (boundaries, boundaryName);

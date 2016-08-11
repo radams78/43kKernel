@@ -28,7 +28,7 @@ public class Boundary extends CoqObject {
 	super(COQTYPE + " " + CoqObject.NAT + " " + topPath.getLength() + " " + bottomPath.getLength(), 
 	      CONSTRUCTOR + " " + topPath.getLength() + " " + bottomPath.getLength() + " " + topPath.get(0) + " " + topPath.getLast() + " " + topPath.getMiddle() + " \n " + bottomPath.getMiddle()); // TODO Duplication with other CoqObject constructors?
 	assert topPath.get(0).equals(bottomPath.get(0));
-	assert topPath.getLast().equals(bottomPath.getLast());
+	assert topPath.getLast().equals(bottomPath.getLast()) : "Top path ends in " + topPath.getLast() + " while bottom path ends in " + bottomPath.getLast();
 	this.topPath = topPath;
 	this.bottomPath = bottomPath;
 	this.size = vertexSet().size();
@@ -62,8 +62,8 @@ public class Boundary extends CoqObject {
 	return neighbors(S).contains(v);
     }
     
-    public int topPathLength() {return topPath.size() - 2;}
-    public int bottomPathLength() {return bottomPath.size() - 2;}
+    public Path.PathLength topPathLength() {return topPath.getLength();}
+    public Path.PathLength bottomPathLength() {return bottomPath.getLength();}
     
     public Vertex leftAnchor() {return topPath.get(0);}
     public Vertex rightAnchor() {return topPath.get(topPath.size() - 1);}
@@ -151,7 +151,7 @@ public class Boundary extends CoqObject {
     
     // TESTING
     public static void main(String[] args) {
-	Path topBoundaryTopPath, topBoundaryBottomPath;
+	ArrayList<Vertex> topBoundaryTopVertex, topBoundaryBottomVertex;
 	
 	Scanner sc = new Scanner(System.in);
 	
@@ -162,15 +162,16 @@ public class Boundary extends CoqObject {
 	int tt, tb;
 	tt = sc.nextInt();
 	tb = sc.nextInt();
+
+	topBoundaryTopVertex = new ArrayList<Vertex>();
+	topBoundaryBottomVertex = new ArrayList<Vertex>();
 	
-	topBoundaryTopPath = new Path();	
-	topBoundaryBottomPath = new Path();
+	while(tt-->0) {topBoundaryTopVertex.add(new Vertex(sc.nextInt()));}
+	while(tb-->0) {topBoundaryBottomVertex.add(new Vertex(sc.nextInt()));}
 	
-	while(tt-->0) {topBoundaryTopPath.add(new Vertex(sc.nextInt()));}
-	while(tb-->0) {topBoundaryBottomPath.add(new Vertex(sc.nextInt()));}
-	
-	Boundary topB = new Boundary(topBoundaryTopPath, topBoundaryBottomPath);
-	
+	Boundary topB = new Boundary(new Path(topBoundaryTopVertex), 
+				     new Path(topBoundaryBottomVertex));
+
 	System.out.println("Resulting Boundary: ");
 	System.out.println(topB);
 	
